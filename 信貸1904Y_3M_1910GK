@@ -1,0 +1,108 @@
+data _NULL_;
+yymm=intnx("month",today(),-1);
+yymm1=intnx("month",today(),+0);
+year=year(today());
+month=month(today());
+L9SM = INTNX("MONTH",today(),-10); /*9個月前第一天*/
+L9EM = INTNX("MONTH",today(),-2,"END"); /*前一個月最後一天*/
+yymm_2 = INTNX("MONTH",today(),-3); /*前2個月*/
+yymm_1 = INTNX("MONTH",today(),-2); /*前1個月*/
+yymm_3 = INTNX("MONTH",today(),-4); /*前90天→改前3個月*/
+yymm_6 = INTNX("MONTH",today(),-7); /*前180天→改前6個月*/
+week1 = max(INTNX("week",intnx("month",today(),-1,"END"),0 )); /*前1個月的週末*/
+week7 = max(INTNX("week",intnx("month",today(),-7,"END"),0 )); /*前7個月的週末*/
+CALL SYMPUT("yymm",  compress(PUT(yymm,YYMMN4.)));
+CALL SYMPUT("yymm1",  compress(PUT(yymm1,YYMMN4.))); /*改成YYMM格式*/
+CALL SYMPUT("year",  compress(year));
+CALL SYMPUT("m",  compress(month));
+CALL SYMPUT("L9SM", L9SM); 
+CALL SYMPUT("L9EM", L9EM);
+CALL SYMPUT("yymm_1", compress(PUT(yymm_1,YYMMN4.))); 
+CALL SYMPUT("yymm_2", compress(PUT(yymm_2,YYMMN4.)));  
+CALL SYMPUT("yymm_3", compress(PUT(yymm_3,YYMMN4.))); 
+CALL SYMPUT("yymm_6", compress(PUT(yymm_6,YYMMN4.))); 
+CALL SYMPUT("week1", compress(PUT(week1,yymmddn8.))); 
+CALL SYMPUT("week7", compress(PUT(week7,yymmddn8.))); 
+RUN;
+%PUT &YYMM. &YYMM1. &year. &m;
+%PUT &L9SM. &L9EM;
+%PUT &yymm_1. &yymm_2. ;
+%PUT &yymm_3. &yymm_6. ;
+%PUT &week1. &week7.;
+
+
+/*跑信貸JCIC的Code*/
+
+
+%let SCORE_Y = 1904 ;
+proc sql;
+create table ANALY_&YYMM.GK_&SCORE_Y. as
+select enc_Customer_id
+,Flag
+,score
+,case when APPL.enc_Customer_id is not null then 1
+else 0 end as APPL_Flag  /*本行進件*/
+,case when JCIC.enc_Customer_id is not null then 1
+else 0 end as JCIC_Flag  /*JCIC撥貸*/
+,case when CTBC.enc_Customer_id is not null then 1
+else 0 end as CTBC_Flag /*本行撥貸*/
+,case when JCIC_ALL.enc_Customer_id is not null then 1
+else 0 end as JCIC_ALL_Flag  /*總撥貸*/
+
+from karen.ALL_&YYMM.(pw='coe01') as GK /*GK大表*/
+left join  karen.unsec_all_&yymm. (pw = 'coe01') as score    /*需求分*/
+on GK.enc_customer_id = score.enc_customer_id
+left join 
+(select distinct enc_Customer_id
+from AAA.Y_&yymm. (pw='coe01')
+where Y_3M = 3
+) as APPL  /*本行進件*/
+on GK.enc_customer_id = APPL.enc_customer_id
+left join 
+(select distinct enc_Customer_id
+from AAA.Y_&yymm. (pw='coe01')
+where Y_3M = 4
+) as JCIC  /*他行撥貸*/
+on GK.enc_customer_id = JCIC.enc_customer_id
+left join
+(select distinct enc_Customer_id
+from AAA.Y_&yymm. (pw='coe01')
+where Y_3M = 5
+) as CTBC  /*本行撥貸*/
+on GK.enc_customer_id = CTBC.enc_customer_id
+left join
+(select distinct enc_Customer_id
+from AAA.Y_&yymm. (pw='coe01')
+where Y_3M in (4,5)
+) as JCIC_all /*JCIC總撥貸*/ 
+on GK.enc_customer_id = JCIC_all.enc_customer_id
+;quit;
+
+/*他行JCIC撥貸金額*/
+proc sql;
+create table JCIC_amt as
+select enc_Customer_id , YYMM
+,JC_118_FUTURE_3M , JC_118_FUTURE_3M_YYMM
+,JC_118_FUTURE_3M_MAXAMT ,JC_118_FUTURE_3M_SUMAMT
+from JCIC_FUTURE_3M
+
+
+/*本行撥貸*/
+proc sql;
+create table ctbc_amt as
+select enc_Customer_id , LOAN_FUTURE_3M_CNT 
+,LOAN_FUTURE_MAXFunding_Amt , LOAN_FUTURE_SUMFunding_Amt
+from LOAN_FUTURE_3M
+
+
+/*分析排除條件*/
+proc sql;
+create table tt as 
+select Flag , count(enc_customer_id) , count(distinct enc_customer_id)
+,sum(APPL) , sum(JCIC) , sum(CTBC) ,SUM(JCIC_ALL)
+from 
+group by Flag
+order by count(distinct enc_customer_id) desc
+;quit;
+
+

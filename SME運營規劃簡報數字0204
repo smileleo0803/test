@@ -214,7 +214,7 @@ CREATE MULTISET TABLE temp_analysisdev.bus_close2019 , NO FALLBACK ,
      DEFAULT MERGEBLOCKRATIO
      (
       comp_id VARCHAR(60) CHARACTER SET Latin NOT CaseSpecific , --CHARACTER SET Latin NOT CaseSpecific
-      close_date VARCHAR(40)
+      close_date DECIMAL(30,0)
       );
 
 INSERT INTO temp_analysisdev.bus_close2019 (comp_id ,close_date )
@@ -227,7 +227,7 @@ CREATE MULTISET TABLE temp_analysisdev.comp_close2019 , NO FALLBACK ,
      DEFAULT MERGEBLOCKRATIO
      (
       comp_id VARCHAR(60) CHARACTER SET Latin NOT CaseSpecific , --CHARACTER SET Latin NOT CaseSpecific
-      close_date VARCHAR(40)
+      close_date DECIMAL(30,0)
       );
 
 INSERT INTO temp_analysisdev.comp_close2019 (comp_id ,close_date)

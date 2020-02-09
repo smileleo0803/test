@@ -1,37 +1,74 @@
+
 /*
-Hi ¨|¸©
-Sara¤§«e¦³¸ò±z½T»{¹L¡A10¤ëªº¦W³æ¶Q³æ¦ì³Ì«á¥¼¤U¥X¥h
-12¤ëªº¦W³æ¤]¶È¤UFA³o¥](¦@105µ§)¡A¦Ó¦¹105µ§¦W³æ©ó1/2°_¤~¥[¤J±M®a¹Î¶¤
-©Ò¥H­Y­n°lÂÜ¦¨®Äªº¸Ü¡A§Ú­Ì¥Ø«e¶È¯à¨ó§U°lÂÜ¦¹105µ§¦¨®Ä¡C
-¤]½Ğ±z¨ó§U¦^ÂĞ¥H¤U°İÃD¡A¥H§Q§Ú­Ì¯à¶i¦æ¦¨®Ä°lÂÜ¡AÁÂÁÂ!
+Hi è‚²è±
+Saraä¹‹å‰æœ‰è·Ÿæ‚¨ç¢ºèªéï¼Œ10æœˆçš„åå–®è²´å–®ä½æœ€å¾Œæœªä¸‹å‡ºå»
+12æœˆçš„åå–®ä¹Ÿåƒ…ä¸‹FAé€™åŒ…(å…±105ç­†)ï¼Œè€Œæ­¤105ç­†åå–®æ–¼1/2èµ·æ‰åŠ å…¥å°ˆå®¶åœ˜éšŠ
+æ‰€ä»¥è‹¥è¦è¿½è¹¤æˆæ•ˆçš„è©±ï¼Œæˆ‘å€‘ç›®å‰åƒ…èƒ½å”åŠ©è¿½è¹¤æ­¤105ç­†æˆæ•ˆã€‚
+ä¹Ÿè«‹æ‚¨å”åŠ©å›è¦†ä»¥ä¸‹å•é¡Œï¼Œä»¥åˆ©æˆ‘å€‘èƒ½é€²è¡Œæˆæ•ˆè¿½è¹¤ï¼Œè¬è¬!
 
-1.	¦¨®Ä°lÂÜ°_¡B°W¤é¬°¦ó? °lÂÜ12¤ëªº105µ§¡A±q¤U¦W³æ·í¤Ñ°_~~Æ[¹î¨ì¦Ü¤W¶g®É¶¡¡A¤§«á¨CÂù¶g§ó·s¦¨®Ä
-2.	¦¨®Ä¥Ø¼Ğ¬°¶}¤á¡BAUM¡B¥~¹ô²£«~¶Ü? ­Y¬O¦¹¤T¶µ¡A»İ¸Ô²Ó»¡©ú©w¸q 
-(1)	¶}¤á¡G¥u­n¥ø·~¤á¦³¶}¥ô¤@¥x¹ô©Î¥~¹ô±b¤á§Y¥i¶Ü? ¬O
-(2)	²b¼WSB AUM¾lÃB¡GAUM¾lÃBªº¤ñ¸û°ò·Ç¤é¬°¦ó? ¨S¦³°ò·Ç¤é ¦]¬°³o¥]«È¤á³£¤£¬OSB¬J¦³«È¤á¡A¥u­n¦³AUM´N¬O²b¼W
-(3)	SB Loan¾lÃB¡G¤£­­²£«~¡A¥u­n¬OLoan´Nºâ¶Ü? ¹ï
-(4)	¥~¹ô²£«~¾lÃB¡G¥~¹ô²£«~²[»\«Ü¼s(¶×§I¡B¥~¹ô¦s´Ú¡B¥~¹ô©ñ´Ú¡K..)¡A¥i§_¦³©ú½T¶µ¥Ø©O?  ³oÂI»İ¨D¥D­n¬O¹ïÀ³²z³W½Ğ±M®a¹Î¶¤±À¼sªºªA°È¡A¥ı¥D­n¬İ¥~¬¡¡B¶×§I
-(5)	«È¤á¸gÀçÁÙ¦b«ùÄòCOOK¡A©Ò¥H¦³¸òSARA°Q½×¹L¡A¥D­n§Æ±æ¬İ¦W³æIPAD¬ù³X±M®a¡B¸ò§¹¦¨call report¶ñ¼g¡ASQL³£µ¹¤F¡A¦Aµ¹§A¤@¦¸
+1.	æˆæ•ˆè¿½è¹¤èµ·ã€è¨–æ—¥ç‚ºä½•? è¿½è¹¤12æœˆçš„105ç­†ï¼Œå¾ä¸‹åå–®ç•¶å¤©èµ·~~è§€å¯Ÿåˆ°è‡³ä¸Šé€±æ™‚é–“ï¼Œä¹‹å¾Œæ¯é›™é€±æ›´æ–°æˆæ•ˆ
+2.	æˆæ•ˆç›®æ¨™ç‚ºé–‹æˆ¶ã€AUMã€å¤–å¹£ç”¢å“å—? è‹¥æ˜¯æ­¤ä¸‰é …ï¼Œéœ€è©³ç´°èªªæ˜å®šç¾© 
+(1)	é–‹æˆ¶ï¼šåªè¦ä¼æ¥­æˆ¶æœ‰é–‹ä»»ä¸€å°å¹£æˆ–å¤–å¹£å¸³æˆ¶å³å¯å—? æ˜¯
+(2)	æ·¨å¢SB AUMé¤˜é¡ï¼šAUMé¤˜é¡çš„æ¯”è¼ƒåŸºæº–æ—¥ç‚ºä½•? æ²’æœ‰åŸºæº–æ—¥ å› ç‚ºé€™åŒ…å®¢æˆ¶éƒ½ä¸æ˜¯SBæ—¢æœ‰å®¢æˆ¶ï¼Œåªè¦æœ‰AUMå°±æ˜¯æ·¨å¢
+(3)	SB Loané¤˜é¡ï¼šä¸é™ç”¢å“ï¼Œåªè¦æ˜¯Loanå°±ç®—å—? å°
+(4)	å¤–å¹£ç”¢å“é¤˜é¡ï¼šå¤–å¹£ç”¢å“æ¶µè“‹å¾ˆå»£(åŒ¯å…Œã€å¤–å¹£å­˜æ¬¾ã€å¤–å¹£æ”¾æ¬¾â€¦..)ï¼Œå¯å¦æœ‰æ˜ç¢ºé …ç›®å‘¢?  é€™é»éœ€æ±‚ä¸»è¦æ˜¯å°æ‡‰ç†è¦è«‹å°ˆå®¶åœ˜éšŠæ¨å»£çš„æœå‹™ï¼Œå…ˆä¸»è¦çœ‹å¤–æ´»ã€åŒ¯å…Œ
+(5)	å®¢æˆ¶ç¶“ç‡Ÿé‚„åœ¨æŒçºŒCOOKï¼Œæ‰€ä»¥æœ‰è·ŸSARAè¨è«–éï¼Œä¸»è¦å¸Œæœ›çœ‹åå–®IPADç´„è¨ªå°ˆå®¶ã€è·Ÿå®Œæˆcall reportå¡«å¯«ï¼ŒSQLéƒ½çµ¦äº†ï¼Œå†çµ¦ä½ ä¸€æ¬¡
 
-SQL¦p¤U
-„«	¦W³æIPAD¬ù³X±M®a¡÷½Ğ°Ñ¨£ªş¥ó
-„«	§¹¦¨call report¶ñ¼g¡÷
+SQLå¦‚ä¸‹
+ïƒ˜	åå–®IPADç´„è¨ªå°ˆå®¶â†’è«‹åƒè¦‹é™„ä»¶
+ïƒ˜	å®Œæˆcall reportå¡«å¯«â†’
 sel    unique customer_id
 from VP_MF_MCIF.FPS_VISIT_RECORD
 where VISIT_DATE between 1190101 and 1190930
 
 */
 
+/*
+1.çœ‹å­˜æ¬¾å¸³æˆ¶æ˜¯å¦å«å¤–å¹£
+2.105æ¯”åå–®è³‡æ–™å­˜æ”¾è™•
+3.çœ‹å°ˆå®¶åœ˜éšŠtableé•·ç›¸*/
 
---105µ§¦W³æBase
-select * 
-from temp_analysisdev.Z
-
-/*¥x¥~¹ô¶}¤á*/
-/*AUM¾lÃB*/
-/*SB Loan¾lÃB*/
-/*¥~¹ô¾lÃB*/
-/*IPAD¬ù³X±M®a(¦ê±M®a¹Î¶¤³­³X)*/
+--105ç­†åå–®Base
+select base.*
+    ,case when ac.customer_id is not null then 1 else 0 end as open_ac /*å°å¤–å¹£é–‹æˆ¶*/
+    ,sum(zeroifnull(r.asset_bal)) aum /*AUMé¤˜é¡*/
+    ,sum(zeroifnull(lum.SME_CB_loan_bal)+zeroifnull(SME_RB_loan_bal))  SME_loan_current_bal  /*SB Loané¤˜é¡*/
+    ,case when cr.customer_id is not null then 1 else 0 end as cr_done  /*å®ŒæˆCall Reportå¡«å¯«*/
+from  as base    /*åå–®*/
+left join 
+(select *
+  from temp_analysisdev.party_SME_segment_M
+ where snapshot_Yr_mth/100-10000=2001
+  and (	( business_line_code<>'2'  or  business_line_code is NULL)
+			 or (business_line_code='2' and channel_code is not NULL))
+ ) sme
+/*SB Loané¤˜é¡*/
+left join 
+(select customer_id
+,bal LUM
+,lcl_bal SME_CB_loan_bal
+,lsl05_bal SME_RB_loan_bal
+from temp_bps.party_sme_lum
+where  snapshot_Yr_mth/100-10000=2001
+and lcl_ind+lsl05_ind>0
+) lum
+on base.sme_id=lum.customer_id
+/*AUMé¤˜é¡*/
+left join 
+(select customer_id,asset_bal,isSecurity_DP
+from   temp_bps.wm_assetsclass_2001
+where isgeneral_pb+issalary_dp+iskb+istd+ispb_xb+istd_xb+isov_xb+issd_xb+isdcd+isrp
+            +ismf+ispsa+ispga+ispvin+isTrust+ishk_pb+ishk_td+ishk_dcd+ishk_mf+isgd
+			+ispna+ispfir+isSecurity_DP>0
+)  R
+on base.sme_id=r.customer_id
+/*å°å¤–å¹£é–‹æˆ¶*/
+left join (select distinct customer_id from vp_bns_mcif.bns_customer
+            union 
+            select distinct customer_id from vc_bns_mcif.bns_customer) as ac
+on base.comp_id = ac.customer_id
+/*å¤–å¹£é¤˜é¡:å¤–å¹£æ´»å­˜*/
+/*IPADç´„è¨ªå°ˆå®¶(ä¸²å°ˆå®¶åœ˜éšŠé™ªè¨ª)*/
 left join
 (
 select a.FA_Event_Nbr
@@ -39,23 +76,24 @@ select a.FA_Event_Nbr
         , max(case when c.team='PA' then c.employee_name else '' end) as "PA"
         , max(case when c.team='IP' then c.employee_name else '' end) as "IP"
         , max(case when c.team='IS' then c.employee_name else '' end) as "IS"
-        , max(case when c.team='FPIµ|' then c.employee_name else '' end) as "FPI-µ|"
-        , max(case when c.team='FPI¤£' then c.employee_name else '' end) as "FPI-¦a"
-        , max(case when c.team='FPI«H' then c.employee_name else '' end) as "FPI-«H"
-    --±M®a³­³X¦æµ{³øªíÀÉ-
+        , max(case when c.team='FPIç¨…' then c.employee_name else '' end) as "FPI-ç¨…"
+        , max(case when c.team='FPIä¸' then c.employee_name else '' end) as "FPI-åœ°"
+        , max(case when c.team='FPIä¿¡' then c.employee_name else '' end) as "FPI-ä¿¡"
+    --å°ˆå®¶é™ªè¨ªè¡Œç¨‹å ±è¡¨æª”-
 from
 (
-sel FA_Event_Nbr
+select FA_Event_Nbr
      , Expert_Employee_Nbr
 from vr_bns_mcif.INWM_EXPERT_EVENT
-where FA_visit_start_date/100=11902  --§ï
-    and cancel_code is null --1¬O¤w§R°£  ¨ä¥L³£ªÅ­È ¬G¨úNull
-    and approval_code=1 --¥DºŞ¼f®Öª¬ºA 1.¤w³q¹L
+where FA_visit_start_date/100=12001  --æ”¹
+    and cancel_code is null --1æ˜¯å·²åˆªé™¤  å…¶ä»–éƒ½ç©ºå€¼ æ•…å–Null
+    and approval_code=1 --ä¸»ç®¡å¯©æ ¸ç‹€æ…‹ 1.å·²é€šé
 group by 1,2
 ) as a
 )
-/*§¹¦¨Call Report¶ñ¼g*/
-sel    unique customer_id
+on 
+/*å®ŒæˆCall Reportå¡«å¯«*/
+left join (select unique customer_id
 from VP_MF_MCIF.FPS_VISIT_RECORD
-where VISIT_DATE between 1190101 and 1190930
-
+where VISIT_DATE between 1191206 and 1200207) as cr
+on 

@@ -1,0 +1,61 @@
+/*
+Hi ¨|¸©
+Sara¤§«e¦³¸ò±z½T»{¹L¡A10¤ëªº¦W³æ¶Q³æ¦ì³Ì«á¥¼¤U¥X¥h
+12¤ëªº¦W³æ¤]¶È¤UFA³o¥](¦@105µ§)¡A¦Ó¦¹105µ§¦W³æ©ó1/2°_¤~¥[¤J±M®a¹Î¶¤
+©Ò¥H­Y­n°lÂÜ¦¨®Äªº¸Ü¡A§Ú­Ì¥Ø«e¶È¯à¨ó§U°lÂÜ¦¹105µ§¦¨®Ä¡C
+¤]½Ð±z¨ó§U¦^ÂÐ¥H¤U°ÝÃD¡A¥H§Q§Ú­Ì¯à¶i¦æ¦¨®Ä°lÂÜ¡AÁÂÁÂ!
+
+1.	¦¨®Ä°lÂÜ°_¡B°W¤é¬°¦ó? °lÂÜ12¤ëªº105µ§¡A±q¤U¦W³æ·í¤Ñ°_~~Æ[¹î¨ì¦Ü¤W¶g®É¶¡¡A¤§«á¨CÂù¶g§ó·s¦¨®Ä
+2.	¦¨®Ä¥Ø¼Ð¬°¶}¤á¡BAUM¡B¥~¹ô²£«~¶Ü? ­Y¬O¦¹¤T¶µ¡A»Ý¸Ô²Ó»¡©ú©w¸q 
+(1)	¶}¤á¡G¥u­n¥ø·~¤á¦³¶}¥ô¤@¥x¹ô©Î¥~¹ô±b¤á§Y¥i¶Ü? ¬O
+(2)	²b¼WSB AUM¾lÃB¡GAUM¾lÃBªº¤ñ¸û°ò·Ç¤é¬°¦ó? ¨S¦³°ò·Ç¤é ¦]¬°³o¥]«È¤á³£¤£¬OSB¬J¦³«È¤á¡A¥u­n¦³AUM´N¬O²b¼W
+(3)	SB Loan¾lÃB¡G¤£­­²£«~¡A¥u­n¬OLoan´Nºâ¶Ü? ¹ï
+(4)	¥~¹ô²£«~¾lÃB¡G¥~¹ô²£«~²[»\«Ü¼s(¶×§I¡B¥~¹ô¦s´Ú¡B¥~¹ô©ñ´Ú¡K..)¡A¥i§_¦³©ú½T¶µ¥Ø©O?  ³oÂI»Ý¨D¥D­n¬O¹ïÀ³²z³W½Ð±M®a¹Î¶¤±À¼sªºªA°È¡A¥ý¥D­n¬Ý¥~¬¡¡B¶×§I
+(5)	«È¤á¸gÀçÁÙ¦b«ùÄòCOOK¡A©Ò¥H¦³¸òSARA°Q½×¹L¡A¥D­n§Æ±æ¬Ý¦W³æIPAD¬ù³X±M®a¡B¸ò§¹¦¨call report¶ñ¼g¡ASQL³£µ¹¤F¡A¦Aµ¹§A¤@¦¸
+
+SQL¦p¤U
+„«	¦W³æIPAD¬ù³X±M®a¡÷½Ð°Ñ¨£ªþ¥ó
+„«	§¹¦¨call report¶ñ¼g¡÷
+sel    unique customer_id
+from VP_MF_MCIF.FPS_VISIT_RECORD
+where VISIT_DATE between 1190101 and 1190930
+
+*/
+
+
+--105µ§¦W³æBase
+select * 
+from temp_analysisdev.Z
+
+/*¥x¥~¹ô¶}¤á*/
+/*AUM¾lÃB*/
+/*SB Loan¾lÃB*/
+/*¥~¹ô¾lÃB*/
+/*IPAD¬ù³X±M®a(¦ê±M®a¹Î¶¤³­³X)*/
+left join
+(
+select a.FA_Event_Nbr
+        , max(case when c.team='FP' then c.employee_name else '' end) as "FP"
+        , max(case when c.team='PA' then c.employee_name else '' end) as "PA"
+        , max(case when c.team='IP' then c.employee_name else '' end) as "IP"
+        , max(case when c.team='IS' then c.employee_name else '' end) as "IS"
+        , max(case when c.team='FPIµ|' then c.employee_name else '' end) as "FPI-µ|"
+        , max(case when c.team='FPI¤£' then c.employee_name else '' end) as "FPI-¦a"
+        , max(case when c.team='FPI«H' then c.employee_name else '' end) as "FPI-«H"
+    --±M®a³­³X¦æµ{³øªíÀÉ-
+from
+(
+sel FA_Event_Nbr
+     , Expert_Employee_Nbr
+from vr_bns_mcif.INWM_EXPERT_EVENT
+where FA_visit_start_date/100=11902  --§ï
+    and cancel_code is null --1¬O¤w§R°£  ¨ä¥L³£ªÅ­È ¬G¨úNull
+    and approval_code=1 --¥DºÞ¼f®Öª¬ºA 1.¤w³q¹L
+group by 1,2
+) as a
+)
+/*§¹¦¨Call Report¶ñ¼g*/
+sel    unique customer_id
+from VP_MF_MCIF.FPS_VISIT_RECORD
+where VISIT_DATE between 1190101 and 1190930
+

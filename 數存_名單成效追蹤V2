@@ -1,0 +1,146 @@
+/*數存名單追蹤(排系統GK前：271,731)*/  
+select customer_id from temp_analysisdev.Z35615_MyWay_20W_20191219
+
+/*CRM產出名單 330,739*/ /*332,700*/
+select customer_ID
+from vr_bns_mcif.mh_email_result
+where project_nbr like '%116842%'
+
+/*系統排GK後發出名單(排系統GK後：151,509)*/
+select * from vp_drv_model.DRV_CAMP_ID
+where rms_camp_code in ('2019121200021_000_E06_002')
+
+-------------------------------------------------------------------------------------------------------------------
+/*查看CRM數存名單是否有與STT晚發時期成交的客戶重疊*/
+/*數研發名單中12/21-1/2有成交的人，共74人，其中22人被CRM出了*/
+select a.*
+,case when b.customer_ID is not null then 1 else 0 end as Op_A 
+from vp_drv_model.DRV_CAMP_ID a
+left join (select customer_id , min(Acct_Open_Date) as Acct_Open_Date
+	from vr_bns_mcif.bns_deposit
+	where acct_status_code = '00'  ---現行流通戶
+	and (account_nbr like ('000090156%') -----數位台幣
+		or account_nbr like ('090120%')) ------數位外幣
+	and ( Acct_Open_Date >= 1191221 and Acct_Open_Date < 1200102 )
+	group by customer_id ) b
+on a.customer_id = b.customer_ID	
+where rms_camp_code in ('2019121200021_000_E06_002')
+and Op_A = 1
+and a.customer_id in (select distinct customer_id 
+	from vr_bns_mcif.MH_EMAIL_RESULT
+	where Mail_Status_Code in ('601','602') /*成功發送，無退信*/
+	and Project_nbr in (116842,116174,116834,117155))
+
+/*確認名單是否被CRM排擠→無排擠，重覆發了*/
+and a.customer_id in (select distinct customer_id  
+	from vr_bns_mcif.MH_EMAIL_RESULT
+	where Mail_Status_Code in ('601','602') /*成功發送，無退信*/
+	and Project_nbr in (117564))
+
+-------------------------------------------------------------------------------------------------------------------
+/*追蹤成效分析*/
+select My_Way_Date, score_level , count(customer_id),count(distinct customer_ID)
+	,sum(Arriv_CNT) /*EDM成功送達人數*/
+	,sum(READ_CNT)  /*EDM成功READ人數*/
+	,sum(CLICK_CNT) /*EDM成功CLICK人數*/
+	,sum(My_Way_CNT) /*數存開戶數*/
+from temp_analysisdev.Z35615_MyWay_20W_20191219_TRACK
+where Arriv_CNT = 1
+group by My_Way_Date , score_level
+order by My_Way_Date , score_level desc
+
+
+---------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------
+/*系統排GK後發出名單(NEW)*/ 
+create multiset table temp_analysisdev.MyWay1_TRACK as
+(
+select base.customer_id /*排GK後名單總數*/
+	,score
+	,Acct_Open_Date
+	,case when emp.customer_id is not null then 1 else 0 end as emp_flag  /*是否為(關係)員工*/
+    ,case when mh_result.customer_id is not null then 1 else 0 end as Arriv_CNT  /*EDMt成功送達*/
+  	,case when mh_read.customer_id is not null then 1 else 0 end as READ_CNT  /*EDMt成功READ*/
+ 	,case when mh_click.customer_id is not null then 1 else 0 end as CLICK_CNT  /*EDMt成功CLICK*/
+	,case when My_Way.customer_id is not null then 1 else 0 end as My_Way_CNT  /*數存開戶人數*/
+	,case when score >= 0.9 then '0.9以上'
+		when score >= 0.8 and score < 0.9 then '0.8-0.9'
+		when score >= 0.7 and score < 0.8 then '0.7-0.8'
+		when score >= 0.6 and score < 0.7 then '0.6-0.7'
+		when score >= 0.5 and score < 0.6 then '0.5-0.6'
+		when score >= 0.4 and score < 0.5 then '0.4-0.5'
+		when score >= 0.3 and score < 0.4 then '0.3-0.4'
+		when score >= 0.2 and score < 0.3 then '0.2-0.3'
+		when score >= 0.1 and score < 0.2 then '0.1-0.2'
+		else '0.1以下' end as score_level
+from vp_drv_model.DRV_CAMP_ID as base
+/*是否為員工戶或關係企業員工*/
+left join (
+	select distinct customer_id
+	from vp_drv_model.drv_cust_privacy_attribute
+	where consent_option_ind='N'
+	and privacy_attribute_code in ('AS0007'   /*員工*/   
+								  ,'AS0009'   /*關係企業員工*/ )
+) emp
+on base.customer_id = emp.customer_id
+/*只能從日報找出專案代碼Project_Nbr去追蹤*/
+left join (
+/*EDM送達名單*/
+	select distinct customer_id 
+	from vr_bns_mcif.MH_EMAIL_RESULT
+	where Mail_Status_Code in ('601','602') /*成功發送，無退信*/
+	and Project_nbr in (117564)
+) mh_result
+on base.customer_id = mh_result.customer_id
+left join (
+/*Read EDM名單*/
+	select distinct customer_id
+	from vr_bns_mcif.MH_READ_DETAIL
+	where Project_Nbr in (117564)
+	and Read_Date >= 119
+) mh_read
+on base.customer_ID = mh_read.customer_ID 
+left join (
+/*Click EDM名單*/
+	select distinct customer_id 
+	from vr_bns_mcif.MH_CLICK_DETAIL
+	where Project_Nbr in (117564)
+	and Click_Date
+
+) mh_click
+on base.customer_id = mh_click.customer_id
+left join (
+/*數存開戶人數*/  /*用ACCOUNT_NBR對較佳，因為很多ID is null*/
+	select customer_id , min(Acct_Open_Date) as Acct_Open_Date
+	from vr_bns_mcif.bns_deposit
+	where acct_status_code = '00'  ---現行流通戶
+	and (account_nbr like ('000090156%') -----數位台幣
+		or account_nbr like ('090120%')) ------數位外幣
+	and ( Acct_Open_Date >= 1200102 and Acct_Open_Date <= 1200109 )
+	group by customer_id
+) My_Way
+on base.customer_ID = My_Way.customer_id 
+left join ( 
+/*STT資訊*/
+	select distinct customer_id , score 
+	from temp_analysisdev.SST_20191202 as a
+	where segment in ('繳費族')
+) score
+on base.customer_id = score.customer_id
+
+where base.rms_camp_code in ('2019121200021_000_E06_002')
+) with data;
+
+
+
+-------------------------------------------------------------------------------------------------------------------
+/*追蹤成效分析*/
+select score_level , count(customer_id),count(distinct customer_ID)
+	,sum(Arriv_CNT) /*EDM成功送達人數*/
+	,sum(READ_CNT)  /*EDM成功READ人數*/
+	,sum(CLICK_CNT) /*EDM成功CLICK人數*/
+	,sum(My_Way_CNT) /*數存開戶數*/
+from temp_analysisdev.Z35615_MyWay_20W_20191219_TRACK
+where Arriv_CNT = 1
+group by score_level
+order by score_level desc

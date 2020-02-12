@@ -1,0 +1,47 @@
+/*用雯倩第二版定義的Base、戶數考量不去重複*/
+/*總分析*/
+SELECT SEG, base_type ,GP_Waterfall, Count(*) , Count(DISTINCT sme_id) , Count(DISTINCT smeo_id)
+FROM temp_analysisdev.Z35615_SME_S3
+GROUP BY SEG, base_type,GP_Waterfall
+
+
+/***********考慮好人條件************/
+SELECT SEG, base_type , Count(*) , Count(DISTINCT sme_id) , Count(DISTINCT smeo_id)
+FROM temp_analysisdev.Z35615_SME_S3
+WHERE GP_Waterfall in ('99.好人客戶')
+GROUP BY SEG, base_type
+
+
+/***********考慮好賣條件************/
+--SMEO高需求分
+SELECT SEG, base_type , Count(*) , Count(DISTINCT sme_id) , Count(DISTINCT smeo_id)
+FROM temp_analysisdev.Z35615_SME_S3
+WHERE GP_Waterfall in ('99.好人客戶')
+GROUP BY SEG, base_type
+
+--SME高貸款
+SELECT SEG, base_type , Count(*) , Count(DISTINCT sme_id) , Count(DISTINCT smeo_id)
+FROM temp_analysisdev.Z35615_SME_S3
+WHERE GP_Waterfall in ('99.好人客戶')
+and High_Loan in (1)
+GROUP BY SEG, base_type
+
+
+
+/***************產業人數*******************/
+SELECT SEG, base_type ,ind_type, Count(*) , Count(DISTINCT sme_id) , Count(DISTINCT smeo_id)
+FROM temp_analysisdev.Z35615_SME_S3
+WHERE GP_Waterfall in ('99.好人客戶')
+GROUP BY SEG, base_type, ind_type
+
+
+/***************各客群營建產業人數*******************/
+SELECT SEG, Count(*) , Count(DISTINCT sme_id) , Count(DISTINCT smeo_id)
+FROM temp_analysisdev.Z35615_SME_S3
+WHERE clase_comp not IN (1) -- '02.2019年停歇業'
+		and Bad_Law not IN (1) -- '03.重大訴訟案'
+		and Bad_Yr not IN (1) -- '04.開業年資未滿一年'
+		and under_300W not IN (1) -- '05.營收小於300萬'
+		and Bad_TBRG not IN (1) 
+		and ind_type in ('F.營建工程業')
+GROUP BY SEG

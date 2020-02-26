@@ -1,253 +1,226 @@
---SCC_¥ø·~³W¼ÒX©¹¨ÓÃö«Y½LÂI(¨£³Ì¤U¤è)
---SMEOªºAUM­«¤À
+--SCC_ä¼æ¥­è¦æ¨¡Xå¾€ä¾†é—œä¿‚ç›¤é»(è¦‹æœ€ä¸‹æ–¹)
+--SMEOçš„AUMé‡åˆ†
+--check SBLOAN FLAG
 
-/*Part1¡G¸ê®Æ»¡©ú(¥Î¶²­Å²Ä2ª©©w¸qªºBase¡B¤á¼Æ¤£¥h­«½Æ);¸ê®Æ®É¶¡¡G20200211*/
-/*Base_°Ñ·Ó¶²­Å©nªºCODE_v2 (2020/02/06)¡÷ SQL¡GSME«È¸sBase©w¸q
-  ­«¤ÀECC¡BSCC*/
-/*°±·²·~§ó·s¬°¤u°Ó¡G20200131¡Bµ|Äy20200206*/
-/*§ó·s¶i¥X¤f¹êÁZ¦Ü2018¦~¥ş¦~*/
-/*³]¥ß¦~¸ê§ï¥¿*/
+/*Part1ï¼šè³‡æ–™èªªæ˜(ç”¨é›¯å€©ç¬¬2ç‰ˆå®šç¾©çš„Baseã€æˆ¶æ•¸ä¸å»é‡è¤‡);è³‡æ–™æ™‚é–“ï¼š20200211*/
+/*Base_åƒç…§é›¯å€©å§Šçš„CODE_v2 (2020/02/06)â†’ SQLï¼šSMEå®¢ç¾¤Baseå®šç¾©
+  é‡åˆ†ECCã€SCC*/
+/*åœæ­‡æ¥­æ›´æ–°ç‚ºå·¥å•†ï¼š20200131ã€ç¨…ç±20200206*/
+/*æ›´æ–°é€²å‡ºå£å¯¦ç¸¾è‡³2018å¹´å…¨å¹´*/
+/*è¨­ç«‹å¹´è³‡æ”¹æ­£*/
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
-/*µ|Äy¸ê®Æ1,464,558µ§¸ê®Æ*/
+/*ç¨…ç±è³‡æ–™1,464,558ç­†è³‡æ–™*/
 select * from temp_analysisdev.Z35615_BGM_200206
---­«·s¾ã²zID
+--é‡æ–°æ•´ç†ID
 select * from temp_analysisdev.Z35615_BGM_200206 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
-/*¤¤¤p¥ø·~¥Õ¥Ö®Ñ(Àç¦¬¬dªí)¡÷SQL¡G¤¤¤p¥ø·~¥Õ¥Ö®Ñ¶×¤J_2018*/
+/*ä¸­å°ä¼æ¥­ç™½çš®æ›¸(ç‡Ÿæ”¶æŸ¥è¡¨)â†’SQLï¼šä¸­å°ä¼æ¥­ç™½çš®æ›¸åŒ¯å…¥_2018*/
 select * from temp_analysisdev.SME_WhitePaper2018
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
-/*¤u°Óµn°O°±·²·~¸ê®Æ(SQL:¤u°Óµn°O1912¸ê®Æ³B²z)*/
+/*å·¥å•†ç™»è¨˜åœæ­‡æ¥­è³‡æ–™(SQL:å·¥å•†ç™»è¨˜1912è³‡æ–™è™•ç†)*/
 select * from temp_analysisdev.sb_company_200131 
 select * from temp_analysisdev.sb_branch_company_200131
 select * from temp_analysisdev.sb_business_200131 
 select * from temp_analysisdev.sb_branch_business_200131 
 select * from temp_analysisdev.sb_factory_200131
 select * from temp_analysisdev.sb_limited_partnership_200131
-/*Á`©M¸ê®Æ*/
+/*ç¸½å’Œè³‡æ–™*/
 select * from temp_analysisdev.sb_company_2001
 
-/*¦sÄòªÌID¡B³]¥ß¤é¡BÅÜ§ó¤é¡B¸ê¥»ÃB*/  --1438954
+/*å­˜çºŒè€…IDã€è¨­ç«‹æ—¥ã€è®Šæ›´æ—¥ã€è³‡æœ¬é¡*/  --1438954
 select * from temp_analysisdev.EC_survive_info_2001  
-/*°±·²·~ID*/  --991946
+/*åœæ­‡æ¥­ID*/  --991946
 select * from temp_analysisdev.EC_cloced_info_2001  
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
-/*¶i¥X¤f¹êÁZ*/
+/*é€²å‡ºå£å¯¦ç¸¾*/
 select tax_id , flag from temp_analysisdev.sb_trade_value_range_2018  --311921
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
-/*SMEO»İ¨D¤À*/
-/*¬D¿ï¦W³æ«á¶K¦^SA³B²z¡÷SQL¡GSMEO»İ¨D¤À_SAS*/
+/*SMEOéœ€æ±‚åˆ†*/
+/*æŒ‘é¸åå–®å¾Œè²¼å›SAè™•ç†â†’SQLï¼šSMEOéœ€æ±‚åˆ†_SAS*/
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
-/*¥d¬¡ÅD(ªñ6M¦³¨ê¥d)*/
+/*å¡æ´»èº(è¿‘6Mæœ‰åˆ·å¡)*/
 select distinct party_id from vdm_sem.cc_bill_spending
-Where txn_dt between  1190801 and 1200131 /**¤U°Ï¶¡**/ 
+Where txn_dt between  1190801 and 1200131 /**ä¸‹å€é–“**/ 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
-/*SMEOAUM>=10¸U(segment_report)*/
+/*SMEOAUM>=10è¬(segment_report)*/
 select customer_id , asset_bal from temp_bps.wm_assetsclass_2001 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
-/*Sara¼ç¤O10¸U¦W³æBase*/
+/*Saraæ½›åŠ›10è¬åå–®Base*/
 select * from temp_analysisdev.Z35615_SB_greatlist_20200121
-where waterfall in ('99_²Å¦X¦W³æ')
+where waterfall in ('99_ç¬¦åˆåå–®')
     and comp_id not in (select customer_id from vr_bns_mcif.bns_customer)
     and comp_id not in (select customer_id from vc_bns_mcif.bns_customer) 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
-/*SME¾ã²zFinal Base*/
+/*SMEæ•´ç†Final Base*/
 create table temp_analysisdev.Z35615_SMEBase_2001 as(
 select a.*
-	,case when   Duration_Code='N'  then '«D¦sÄò' else  '¦sÄò'  end   Duration_flag
-	,case when    R_ind+merchant_ind+SME_loan_ind=0 then '00.µL©¹¨Ó'
-          when    Pure_Sec_Ind=1 and merchant_ind+SME_loan_ind=0 then '00.¯ÂÃÒ'
-          when substr(Company_List_Cd,1,2)='G0' then 'G0.¤@¯ëSB¤á'
-          when substr(Company_List_Cd,1,2)='S1'  then 'S1.±M1¡G¯S©wªk¤H'
-          when substr(Company_List_Cd,1,2)='S2'  then 'S2.±M2¡G±M¤á«H°U'
-          when substr(Company_List_Cd,1,2)='S3'  then 'S3.±M3¡G¥x±m±M¤á'
-          when substr(Company_List_Cd,1,2)='S4'  then 'S4.±M4¡G¹B±m±M¤á'
-		  when   channel_code='ECC' then 'C1:ECCªkª÷«È¤á'
-		  when   channel_code='SME' then 'C2:SCCªkª÷«È¤á'
-		  when   channel_code='RBB' then 'C3:BFAªkª÷«È¤á'
-		  when merchant_ind=1 then 'M0:¯Â¦¬³æ'
-		  else '99.¨ä¥L'
+	,case when   Duration_Code='N'  then 'éå­˜çºŒ' else  'å­˜çºŒ'  end   Duration_flag
+	,case when    R_ind+merchant_ind+SME_loan_ind=0 then '00.ç„¡å¾€ä¾†'
+          when    Pure_Sec_Ind=1 and merchant_ind+SME_loan_ind=0 then '00.ç´”è­‰'
+          when substr(Company_List_Cd,1,2)='G0' then 'G0.ä¸€èˆ¬SBæˆ¶'
+          when substr(Company_List_Cd,1,2)='S1'  then 'S1.å°ˆ1ï¼šç‰¹å®šæ³•äºº'
+          when substr(Company_List_Cd,1,2)='S2'  then 'S2.å°ˆ2ï¼šå°ˆæˆ¶ä¿¡è¨—'
+          when substr(Company_List_Cd,1,2)='S3'  then 'S3.å°ˆ3ï¼šå°å½©å°ˆæˆ¶'
+          when substr(Company_List_Cd,1,2)='S4'  then 'S4.å°ˆ4ï¼šé‹å½©å°ˆæˆ¶'
+		  when   channel_code='ECC' then 'C1:ECCæ³•é‡‘å®¢æˆ¶'
+		  when   channel_code='SME' then 'C2:SCCæ³•é‡‘å®¢æˆ¶'
+		  when   channel_code='RBB' then 'C3:BFAæ³•é‡‘å®¢æˆ¶'
+		  when merchant_ind=1 then 'M0:ç´”æ”¶å–®'
+		  else '99.å…¶ä»–'
 		  end target_flag
 from (select *
 	  from temp_analysisdev.party_SME_segment_M 
 	  where snapshot_Yr_mth/100-10000=2001
-	  and (( business_line_code<>'2'  or  business_line_code is NULL)   --°Ï¤ÀºŞ²zÅv­­!!!
+	  and (( business_line_code<>'2'  or  business_line_code is NULL)   --å€åˆ†ç®¡ç†æ¬Šé™!!!
 			 or (business_line_code='2' and channel_code is not NULL) 
 		  )
 	  ) a
-where Duration_flag in ('¦sÄò')
-and target_flag not in ('00.µL©¹¨Ó' , '00.¯ÂÃÒ')
+where Duration_flag in ('å­˜çºŒ')
+and target_flag not in ('00.ç„¡å¾€ä¾†' , '00.ç´”è­‰')
 ) with data ; 
 
 /*****************************************************************************************************************************************************/
-/*Part2¡G²£¤ÀªR¤jªí*/
+/*Part2ï¼šç”¢åˆ†æå¤§è¡¨*/
 create table temp_analysisdev.Z35615_SME_S2 as
 (
-select base.sme_id ,base.smeo_id ,base.base_flag --¬J¦³¤á/¼ç¤O¤áFlag
-    ,case when ec.set_yr_yyymmdd > 10000 then 1 else 0 end as set_yr_above1Y  --¡]¤u°Óµn°O¡^¶}·~¦~¸ê>1¦~
+select base.sme_id ,base.smeo_id ,base.base_flag --æ—¢æœ‰æˆ¶/æ½›åŠ›æˆ¶Flag
+    ,case when ec.set_yr_yyymmdd > 10000 then 1 else 0 end as set_yr_above1Y  --ï¼ˆå·¥å•†ç™»è¨˜ï¼‰é–‹æ¥­å¹´è³‡>1å¹´
 	,set_yr_yyymmdd
-    ,ec.capital --¸ê¥»ÃB
-    ,bgm.*  --µ|Äy¸ê®Æ¡]²£·~¡^
-    ,td.flag as trade_flag --¶i¥X¤f¹êÁZ¯Å¶Z	
-    ,Case when substr(trim(bgm.industry_code),1,2) in ('01','02','03') then 'A.¹A¡BªL¡Bº®¡Bªª·~'
-	when substr(trim(bgm.industry_code),1,2) in ('05','06') then 'B.Äq·~¤Î¤g¥Û±Ä¨ú·~'
-	--when substr(trim(customer_id),1,2) >= 08 and substr(trim(customer_id),1,2) <= 34 then 'C.»s³y·~'
+    ,ec.capital --è³‡æœ¬é¡
+    ,bgm.*  --ç¨…ç±è³‡æ–™ï¼ˆç”¢æ¥­ï¼‰
+    ,td.flag as trade_flag --é€²å‡ºå£å¯¦ç¸¾ç´šè·	
+    ,Case when substr(trim(bgm.industry_code),1,2) in ('01','02','03') then 'A.è¾²ã€æ—ã€æ¼ã€ç‰§æ¥­'
+	when substr(trim(bgm.industry_code),1,2) in ('05','06') then 'B.ç¤¦æ¥­åŠåœŸçŸ³æ¡å–æ¥­'
+	--when substr(trim(customer_id),1,2) >= 08 and substr(trim(customer_id),1,2) <= 34 then 'C.è£½é€ æ¥­'
 	when substr(trim(bgm.industry_code),1,2) in ('08','09','10','11','12','13','14','15','16','17','18','19','20',
-								'21','22','23','24','25','26','27','28','29','30','31','32','33','34') then 'C.»s³y·~'
-	when substr(trim(bgm.industry_code),1,2) in ('35') then 'D.¹q¤O¤Î¿U®ğ¨ÑÀ³·~'
-	when substr(trim(bgm.industry_code),1,2) in ('36','37','38','39') then 'E.¥Î¤ô¨ÑÀ³¤Î¦Ã¬V¾ãªv·~'
-	when substr(trim(bgm.industry_code),1,2) in ('41','42','43') then 'F.Àç«Ø¤uµ{·~'
-	when substr(trim(bgm.industry_code),1,2) in ('45','46','47','48') then 'G.§åµo¤Î¹s°â·~'
-	when substr(trim(bgm.industry_code),1,2) in ('49','50','51','52','53','54') then 'H.¹B¿é¤Î­ÜÀx·~'
-	when substr(trim(bgm.industry_code),1,2) in ('55','56') then 'I.¦í±J¤ÎÀ\¶¼·~'
-	when substr(trim(bgm.industry_code),1,2) in ('58','59','60','61','62','63') then 'J.¥Xª©¡B¼v­µ»s§@¡B¶Ç¼½¤Î¸ê³q°TªA°È·~'
-	when substr(trim(bgm.industry_code),1,2) in ('64','65','66') then 'K.ª÷¿Ä¤Î«OÀI·~'
-	when substr(trim(bgm.industry_code),1,2) in ('67','68') then 'L.¤£°Ê²£·~'
-	when substr(trim(bgm.industry_code),1,2) in ('69','70','71','72','73','74','75','76') then 'M.±M·~¡B¬ì¾Ç¤Î§Ş³NªA°È·~'
-	when substr(trim(bgm.industry_code),1,2) in ('77','78','79','80','81','82') then 'N.¤ä´©ªA°È·~'
-	when substr(trim(bgm.industry_code),1,2) in ('83','84') then 'O.¤½¦@¦æ¬F¤Î°ê¨¾¡F±j¨î©ÊªÀ·|¦w¥ş'
-	when substr(trim(bgm.industry_code),1,2) in ('85') then 'P.±Ğ¨|·~'
-	when substr(trim(bgm.industry_code),1,2) in ('86','87','88') then 'Q.ÂåÀø«O°·¤ÎªÀ·|¤u§@ªA°È·~'
-	when substr(trim(bgm.industry_code),1,2) in ('90','91','92','93') then 'R.ÃÀ³N¡B®T¼Ö¤Î¥ğ¶¢ªA°È·~'
-	when substr(trim(bgm.industry_code),1,2) in ('94','95','96') then 'S.¨ä¥LªA°È·~'
-	else 'X.¨ä¥L«D¥D­p³BÃş§O' end as ind_type
+								'21','22','23','24','25','26','27','28','29','30','31','32','33','34') then 'C.è£½é€ æ¥­'
+	when substr(trim(bgm.industry_code),1,2) in ('35') then 'D.é›»åŠ›åŠç‡ƒæ°£ä¾›æ‡‰æ¥­'
+	when substr(trim(bgm.industry_code),1,2) in ('36','37','38','39') then 'E.ç”¨æ°´ä¾›æ‡‰åŠæ±¡æŸ“æ•´æ²»æ¥­'
+	when substr(trim(bgm.industry_code),1,2) in ('41','42','43') then 'F.ç‡Ÿå»ºå·¥ç¨‹æ¥­'
+	when substr(trim(bgm.industry_code),1,2) in ('45','46','47','48') then 'G.æ‰¹ç™¼åŠé›¶å”®æ¥­'
+	when substr(trim(bgm.industry_code),1,2) in ('49','50','51','52','53','54') then 'H.é‹è¼¸åŠå€‰å„²æ¥­'
+	when substr(trim(bgm.industry_code),1,2) in ('55','56') then 'I.ä½å®¿åŠé¤é£²æ¥­'
+	when substr(trim(bgm.industry_code),1,2) in ('58','59','60','61','62','63') then 'J.å‡ºç‰ˆã€å½±éŸ³è£½ä½œã€å‚³æ’­åŠè³‡é€šè¨Šæœå‹™æ¥­'
+	when substr(trim(bgm.industry_code),1,2) in ('64','65','66') then 'K.é‡‘èåŠä¿éšªæ¥­'
+	when substr(trim(bgm.industry_code),1,2) in ('67','68') then 'L.ä¸å‹•ç”¢æ¥­'
+	when substr(trim(bgm.industry_code),1,2) in ('69','70','71','72','73','74','75','76') then 'M.å°ˆæ¥­ã€ç§‘å­¸åŠæŠ€è¡“æœå‹™æ¥­'
+	when substr(trim(bgm.industry_code),1,2) in ('77','78','79','80','81','82') then 'N.æ”¯æ´æœå‹™æ¥­'
+	when substr(trim(bgm.industry_code),1,2) in ('83','84') then 'O.å…¬å…±è¡Œæ”¿åŠåœ‹é˜²ï¼›å¼·åˆ¶æ€§ç¤¾æœƒå®‰å…¨'
+	when substr(trim(bgm.industry_code),1,2) in ('85') then 'P.æ•™è‚²æ¥­'
+	when substr(trim(bgm.industry_code),1,2) in ('86','87','88') then 'Q.é†«ç™‚ä¿å¥åŠç¤¾æœƒå·¥ä½œæœå‹™æ¥­'
+	when substr(trim(bgm.industry_code),1,2) in ('90','91','92','93') then 'R.è—è¡“ã€å¨›æ¨‚åŠä¼‘é–’æœå‹™æ¥­'
+	when substr(trim(bgm.industry_code),1,2) in ('94','95','96') then 'S.å…¶ä»–æœå‹™æ¥­'
+	else 'X.å…¶ä»–éä¸»è¨ˆè™•é¡åˆ¥' end as ind_type
 	
-	,case when ec.capital < 100000 then 'A.¥¼º¡10¸U¤¸'
-		when ec.capital >= 100000 and ec.capital < 1000000 then 'B.10-100¸U¤¸'
-		when ec.capital >= 1000000 and ec.capital < 5000000 then 'C.100-500¸U¤¸'
-		when ec.capital >= 5000000 and ec.capital < 10000000 then 'D.500-1000¸U¤¸'
-		when ec.capital >= 10000000 and ec.capital < 20000000 then 'E.1000-2000¸U¤¸'
-		when ec.capital >= 20000000 and ec.capital < 30000000 then 'F.2000-3000¸U¤¸'
-		when ec.capital >= 30000000 and ec.capital < 40000000 then 'G.3000-4000¸U¤¸'
-		when ec.capital >= 40000000 and ec.capital < 50000000 then 'H.4000-5000¸U¤¸'
-		when ec.capital >= 50000000 and ec.capital < 60000000 then 'I.5000-6000¸U¤¸'
-		when ec.capital >= 60000000 and ec.capital < 80000000 then 'J.6000-8000¸U¤¸'
-		when ec.capital >= 80000000 and ec.capital < 100000000 then 'K.8000¸U-1»õ¤¸'
-		when ec.capital >= 100000000 and ec.capital < 200000000 then 'L.1-2»õ'
-		when ec.capital >= 200000000 then 'M.2»õ¥H¤W'
-        else '¨ä¥L' end as capital_level
-
-    ,r2.manage_flag  --0.¤p¥Õ¡B1.¥b¼ô¡B2.·Ç®Ö¤ß¡B3.®Ö¤ß
-	,r2.degree  --SMEO²z±M³¡¶¤
-    ,case when r2.degree is null then 0 else 1 end as SMEO_FA_flag --SMEO¦³µL²z±M
-    --,ao.ao_level --SMEO²z±M»{¾iµ¥¯Å
-    --,case when ao.fb_ao_code is not null and ao.fb_ao_code <> '00000' and ao.ao_level in ('1' , '2' , '3' ,'4' ) then 1 
-    -- else 0 end as FA_flag --¦³²z±M
-        
+	,case when ec.capital < 100000 then 'A.æœªæ»¿10è¬å…ƒ'
+		when ec.capital >= 100000 and ec.capital < 1000000 then 'B.10-100è¬å…ƒ'
+		when ec.capital >= 1000000 and ec.capital < 5000000 then 'C.100-500è¬å…ƒ'
+		when ec.capital >= 5000000 and ec.capital < 10000000 then 'D.500-1000è¬å…ƒ'
+		when ec.capital >= 10000000 and ec.capital < 20000000 then 'E.1000-2000è¬å…ƒ'
+		when ec.capital >= 20000000 and ec.capital < 30000000 then 'F.2000-3000è¬å…ƒ'
+		when ec.capital >= 30000000 and ec.capital < 40000000 then 'G.3000-4000è¬å…ƒ'
+		when ec.capital >= 40000000 and ec.capital < 50000000 then 'H.4000-5000è¬å…ƒ'
+		when ec.capital >= 50000000 and ec.capital < 60000000 then 'I.5000-6000è¬å…ƒ'
+		when ec.capital >= 60000000 and ec.capital < 80000000 then 'J.6000-8000è¬å…ƒ'
+		when ec.capital >= 80000000 and ec.capital < 100000000 then 'K.8000è¬-1å„„å…ƒ'
+		when ec.capital >= 100000000 and ec.capital < 200000000 then 'L.1-2å„„'
+		when ec.capital >= 200000000 then 'M.2å„„ä»¥ä¸Š'
+        else 'å…¶ä»–' end as capital_level
+/*SMEO*/
+    ,r2.manage_flag  --0.å°ç™½ã€1.åŠç†Ÿã€2.æº–æ ¸å¿ƒã€3.æ ¸å¿ƒ
+	,r2.degree  --SMEOç†å°ˆéƒ¨éšŠ
+    ,case when r2.degree is null then 0 else 1 end as SMEO_FA_flag --SMEOæœ‰ç„¡ç†å°ˆ
+/*å¥½äººæ¢ä»¶*/        
     ,case when substr(bgm.industry_code,1,2) in ('01','02','03','05','06','35','36','37','38','39','41','42','43','66','67','68','93', '96') 
-				then 1 else 0 end as Bad_industry --±Â«H­t­±²£·~
-    ,case when cl.tax_id is not null then 1 else 0 end as clase_comp   /*°±·²·~(µ|Äy¸ê®Æ)*/
-    ,case when j.reg_no is not null then 1 else 0 end as Bad_Law    --­«¤j¶D³^®×(¾H¥Õ¤ó)
-    ,case when set_yr_yyymmdd < 10000 then 1 else 0 end as Bad_Yr   --¶}·~¦~¸ê¥¼º¡¤@¦~
-    ,case when g.tbrg_risk_grade <= 5 then 1 else 0 end as Bad_TBRG   --SMEO­·ÀIµûµ¥TBRG<=5
-
---«H¶U»İ¨D¤À¡B¿Ä©Ğ»İ¨D¤À¡B³Ì°ª»İ¨D¤À¡]SAS¤º°µ¡^
---  ,case when ml_score >¡× unsec_score THEN ml_score ELSE unsec_score END AS maxscore
---  ,case when max_score >= 5 then 1 else 0 end as High_score
-	,case when substr(ind_type,1,1) in ('N','H','Q','G','C','M','I') then 1 else 0 end as top7_Loan--«e7¤j°ª¶U´Ú²£·~
-    ,case when cc.party_id is not null then 1 else 0 end as CC_active_6M  --¥d¬¡ÅD¡]L6M¦³¨ê¡^
-	,case when cc.party_id is not null then 'A.L6M¥d¬¡ÅD' 
-		when cc2.party_id is not null then 'B.L1Y¥d¬¡ÅD'
-		when cc3.party_id is not null then 'C.¦³¥d' else 'D.¨ä¥L' end as CC_active_type
-    ,case when aum.customer_id is null then 'D.µL¸ê®Æ'
-		when aum.asset_bal >= 500000 then 'A.50¸U¥H¤W'
-		when aum.asset_bal < 500000 and aum.asset_bal >= 100000 then 'B.10-50¸U'
-		else 'C.¥¼¹F10¸U' end as SMEO_AUML  --SMEO¦s¿n(AUM)
-	,case when b_txn.customer_id is not null and b_txn.txn_Date>= 1191101 then 'A.L3MÁ{Âd¥æ©ö'
-		when b_txn.customer_id is not null and b_txn.txn_Date between 1190801 and 1191031 then 'B.L6MÁ{Âd¥æ©ö'
-		else 'C.¨ä¥L' end as b_txn_flag  --Á{Âd¥æ©öª¬ºA
+				then 1 else 0 end as Bad_industry --æˆä¿¡è² é¢ç”¢æ¥­
+    ,case when cl.tax_id is not null then 1 else 0 end as clase_comp   /*åœæ­‡æ¥­(ç¨…ç±è³‡æ–™)*/
+    ,case when j.reg_no is not null then 1 else 0 end as Bad_Law    --é‡å¤§è¨´è¨Ÿæ¡ˆ(é„§ç™½æ°)
+    ,case when set_yr_yyymmdd < 10000 then 1 else 0 end as Bad_Yr   --é–‹æ¥­å¹´è³‡æœªæ»¿ä¸€å¹´
+    ,case when g.tbrg_risk_grade <= 5 then 1 else 0 end as Bad_TBRG   --SMEOé¢¨éšªè©•ç­‰TBRG<=5
+--ä¿¡è²¸éœ€æ±‚åˆ†ã€èæˆ¿éœ€æ±‚åˆ†ã€æœ€é«˜éœ€æ±‚åˆ†ï¼ˆSASå…§åšï¼‰
+	,case when substr(ind_type,1,1) in ('N','H','Q','G','C','M','I') then 1 else 0 end as top7_Loan--å‰7å¤§é«˜è²¸æ¬¾ç”¢æ¥­
+/*ä¸ƒå¤§ç”¢å“*/
 	,case when aumsb.iskb >0 then 1 else 0 end as iskb_flag
-,case when aumsb.xb_aum>0  then 1 else 0 end as xb_aum_flag
-,case when ecash.company_id is not NULL  then 1 else 0 end as ecash_flag
-,case when sal.company_id is not NULL  then 1 else 0 end as sal_flag
-,zeroifnull(b.merchant_ind) as merchant_ind 
-,zeroifnull(b.SME_loan_ind) as SME_loan_ind 
-,case when l.customer_id is not null then 1 else 0 end as Loan_flag
-,case when deduct.customer_id is not null then 1 else 0 end as deduct_flag
-,(
-(case when aumsb.iskb>0  then 1 else 0 end)
-+(case when aumsb.xb_aum>0  then 1 else 0 end)
-+(case when ecash.company_id is not NULL  then 1 else 0 end)
-+(case when sal.company_id is not NULL  then 1 else 0 end)
-+zeroifnull(b.merchant_ind)
-+(case when deduct.customer_id   is not NULL then 1 else 0 end)
-+zeroifnull(b.SME_loan_ind)
-) ph7   /*²£«~«ù¦³¼Æ*/
-,(
-(case when aumsb.iskb>0  then 1 else 0 end)
-+(case when aumsb.xb_aum>0  then 1 else 0 end)
-+(case when ecash.company_id is not NULL  then 1 else 0 end)
-+(case when sal.company_id is not NULL  then 1 else 0 end)
-+zeroifnull(b.merchant_ind)
-+zeroifnull(b.SME_loan_ind)
-) ph6   /*²£«~«ù¦³¼Æ*/
+	,case when aumsb.xb_aum>0  then 1 else 0 end as xb_aum_flag
+	,case when ecash.company_id is not NULL  then 1 else 0 end as ecash_flag
+	,case when sal.company_id is not NULL  then 1 else 0 end as sal_flag
+	,zeroifnull(b.merchant_ind) as merchant_ind 
+	,zeroifnull(b.SME_loan_ind) as SME_loan_ind 
+	,case when l.customer_id is not null then 1 else 0 end as Loan_flag
+	,case when deduct.customer_id is not null then 1 else 0 end as deduct_flag
+	,(
+	(case when aumsb.iskb>0  then 1 else 0 end)
+	+(case when aumsb.xb_aum>0  then 1 else 0 end)
+	+(case when ecash.company_id is not NULL  then 1 else 0 end)
+	+(case when sal.company_id is not NULL  then 1 else 0 end)
+	+zeroifnull(b.merchant_ind)
+	+(case when deduct.customer_id   is not NULL then 1 else 0 end)
+	+zeroifnull(b.SME_loan_ind)
+	) ph7   /*ç”¢å“æŒæœ‰æ•¸*/
+	,(
+	(case when aumsb.iskb>0  then 1 else 0 end)
+	+(case when aumsb.xb_aum>0  then 1 else 0 end)
+	+(case when ecash.company_id is not NULL  then 1 else 0 end)
+	+(case when sal.company_id is not NULL  then 1 else 0 end)
+	+zeroifnull(b.merchant_ind)
+	+zeroifnull(b.SME_loan_ind)
+	) ph6   /*ç”¢å“æŒæœ‰æ•¸*/
+/*å¾€ä¾†é—œä¿‚*/
+    ,case when cc.party_id is not null then 1 else 0 end as CC_active_6M  --å¡æ´»èºï¼ˆL6Mæœ‰åˆ·ï¼‰
+	,case when cc.party_id is not null then 'A.L6Må¡æ´»èº' 
+		when cc2.party_id is not null then 'B.L1Yå¡æ´»èº'
+		when cc3.party_id is not null then 'C.æœ‰å¡' else 'D.å…¶ä»–' end as CC_active_type
+    ,case when aum.customer_id is null or aum.customer_id = '' then 'D.ç„¡è³‡æ–™'
+		when aum.asset_bal >= 500000 then 'A.50è¬ä»¥ä¸Š'
+		when aum.asset_bal < 500000 and aum.asset_bal >= 100000 then 'B.10-50è¬'
+		else 'C.æœªé”10è¬' end as SMEO_AUML  --SMEOå­˜ç©(AUM)
+	,case when b_txn.customer_id is not null and b_txn.txn_Date>= 1191101 then 'A.L3Mè‡¨æ«ƒäº¤æ˜“'
+		when b_txn.customer_id is not null and b_txn.txn_Date between 1190801 and 1191031 then 'B.L6Mè‡¨æ«ƒäº¤æ˜“'
+		else 'C.å…¶ä»–' end as b_txn_flag  --è‡¨æ«ƒäº¤æ˜“ç‹€æ…‹
+
+
 
 from 
 (
-select sme_id , smeo_id ,'¬J¦³¤á'as base_flag from temp_analysisdev.Z35615_SMEBase_2001 --¬J¦³¤á
+select sme_id , smeo_id ,'æ—¢æœ‰æˆ¶'as base_flag from temp_analysisdev.Z35615_SMEBase_2001 --æ—¢æœ‰æˆ¶
 union all
-select comp_id as sme_id , cust_id as smeo_id , '¼ç¤O¤á' as base_flag from temp_analysisdev.Z35615_SB_greatlist_20200121 --10W¼ç¤O¤á
-where waterfall in ('99_²Å¦X¦W³æ')
+select comp_id as sme_id , cust_id as smeo_id , 'æ½›åŠ›æˆ¶' as base_flag from temp_analysisdev.Z35615_SB_greatlist_20200121 --10Wæ½›åŠ›æˆ¶
+where waterfall in ('99_ç¬¦åˆåå–®')
     and comp_id not in (select customer_id from vr_bns_mcif.bns_customer)
-    and comp_id not in (select customer_id from vc_bns_mcif.bns_customer) --±Æ°£ÂÂ¤á
-) base --SME¬J¦³+¼ç¤O¥DÅé
-/*¤u°Óµn°O2001_¦sÄò¼t°Ó¸ê®Æ(ID¡B³]¥ß¤é¡BÅÜ§ó¤é¡B¸ê¥»ÃB)*/
+    and comp_id not in (select customer_id from vc_bns_mcif.bns_customer) --æ’é™¤èˆŠæˆ¶
+) base --SMEæ—¢æœ‰+æ½›åŠ›ä¸»é«”
+/*å·¥å•†ç™»è¨˜2001_å­˜çºŒå» å•†è³‡æ–™(IDã€è¨­ç«‹æ—¥ã€è®Šæ›´æ—¥ã€è³‡æœ¬é¡)*/
 left join (select tax_id ,establishment_date , last_modification_date , capital , (20200201 - establishment_date) as set_yr_yyymmdd
 			from temp_analysisdev.EC_survive_info_2001) as ec
 			on base.sme_id = ec.tax_id  
-/*146Wµ|Äy¸ê®Æ(²£·~)*/
+/*146Wç¨…ç±è³‡æ–™(ç”¢æ¥­)*/
 left join (select customer_id ,industry_code, industry_desc
             from temp_analysisdev.Z35615_BGM_200206 ) as bgm on base.sme_id = bgm.customer_id 
-/*¶i¥X¤f¹êÁZ*/
+/*é€²å‡ºå£å¯¦ç¸¾*/
 left join (select tax_id , flag from temp_analysisdev.sb_trade_value_range_2018) as td on base.sme_id = td.tax_id 
-/*²z±M®Ö¤ßSMEO*/
+/*SMEOç†å°ˆç­‰ç´šã€æ ¸å¿ƒå°ç™½*/
 left join (select customer_id , manage_flag , degree from temp_sweep.z25165_2002_a_pilot_Q1) as r2 
-            on base.smeo_id = r2.customer_id  --«FÚ{ª©¥»(100W)
-/*¦³µL²z±M»{¾i¡B²z±Mµ¥¯Å*/
---left join (select customer_id ,fb_ao_code ,fb_name , fb_nbr , substr(trim(fb_ao_code),2,2) as ao_level 
---            from temp_analysisdev.WM_AO_200131 ) as ao on base.smeo_id = ao.customer_id
-/*°±·²·~(¤u°Óµn°O)*/ --1027378
+            on base.smeo_id = r2.customer_id  --äº­ç¬ç‰ˆæœ¬(100W)
+/************************************å¥½äººæ¢ä»¶************************************/
+/*åœæ­‡æ¥­(å·¥å•†ç™»è¨˜)*/ --1027378
 left join ( select * from temp_analysisdev.EC_cloced_info_2001 ) as cl on base.sme_id = cl.tax_id 
-/*­«¤j¶D³^®×(¾H¥Õ¤ó)*/
+/*é‡å¤§è¨´è¨Ÿæ¡ˆ(é„§ç™½æ°)*/
 left join (select reg_no from temp_analysisdev.z35615_dbc where law_record_flag='Y' ) j on base.smeo_id=j.reg_no  
-/*SMEO­·ÀIµûµ¥TBRG>5*/
-left join (select customer_id,tbrg_risk_grade from vp_bns_mcif.scor_cust_behavior_2001) g on base.smeo_id=g.customer_id  /*­·ÀIµû¤À*/
-/****************SMEO°ª»İ¨D¤À*********************/
-/*¥d¬¡ÅD(1908-2001¦³¨ê¥d)*/
-left join (select distinct party_id from vdm_sem.cc_bill_spending Where txn_dt between  1190801 and 1200131) cc on base.smeo_id = cc.party_id 
-/*¥d¬¡ÅD(1902-1907¦³¨ê¥d)*/
-left join (select distinct party_id from vdm_sem.cc_bill_spending Where txn_dt between  1190201 and 1190731) cc2 on base.smeo_id = cc2.party_id
-/*¥d¬¡ÅD_¦³¥d*/
-left join (select distinct Primary_Party_Id from vdm_sem.cc_agreement_m    /*¥d¤ùÀÉ*/                                                                                                                       										
-	where primary_party_group_cd='I'                                                                                                                               										
-	    and card_circulation_cd='0'                                                                                                                                  										
-	    and snapshot_yr_mth= 1200101
-	    and substr(product_id,12,3)  not like all ('160','189','0%', '_99')										
-	    and card_circulation_cd='0'										
-	    and card_ownership_cd='1' /*1='¥¿¥d' 2='ªş¥d'*/ ) cc3
-	on base.smeo_id = cc3.Primary_Party_Id
-/*¯S©±¤ë¦¬³æª÷ÃB*/
-left join ( Select corporate_id , sum(Txn_Amt) as Txn_Amt 
-			from (Select merchant_nbr From Temp_SPD.PMT_Payment_Detail) a
-			left outer join (SEL  corporate_id , mer_party_id  FROM vdm_sem.merchant_profile  ) b on a.merchant_nbr =b.mer_party_id
-			left join (select merchant_nbr ,sum(transaction_amt) as Txn_Amt /**¦¬³æ¶q**/ 
-					    From Temp_SPD.PMT_Payment_Detail
-						Where transaction_posting_date between 1200101 and 1200131 /**³]©w¤ÀªR´Á¶¡**/
-						group by merchant_nbr) c on a.merchant_nbr = c.merchant_nbr
-			group by corporate_id
-)
-/*SMEO AUM */
-left join (select customer_id , asset_bal from temp_bps.wm_assetsclass_2001 ) aum on base.smeo_id = aum.customer_id
-/***  ¦¬³æ¤á¡BSME_LOAN  ***/
+/*SMEOé¢¨éšªè©•ç­‰TBRG>5*/
+left join (select customer_id,tbrg_risk_grade from vp_bns_mcif.scor_cust_behavior_2001) g on base.smeo_id=g.customer_id  /*é¢¨éšªè©•åˆ†*/
+/*SMEOé«˜éœ€æ±‚åˆ†(SASå…§)*/
+/************************************ä¸ƒå¤§ç”¢å“************************************/
+/***  æ”¶å–®æˆ¶ã€SME_LOAN  ***/
 left join 
 	(select *
 	  from temp_analysisdev.party_SME_segment_M 
 	  where snapshot_Yr_mth/100-10000=2001
-	  and (( business_line_code<>'2'  or  business_line_code is NULL)   --°Ï¤ÀºŞ²zÅv­­!!!
+	  and (( business_line_code<>'2'  or  business_line_code is NULL)   --å€åˆ†ç®¡ç†æ¬Šé™!!!
 			 or (business_line_code='2' and channel_code is not NULL) 
 		  )
 	  ) b
 	on base.sme_id = b.sme_id
-/*** ¤ä¦s¡B¥~¹ô ***/
+/*** æ”¯å­˜ã€å¤–å¹£ ***/
 left join 
 (
 select customer_id
@@ -263,41 +236,41 @@ select customer_id
           ,SD_XB+DCD+DSD+Trust+GD+HK_DCD+HK_MF  oth_fee_aum
           ,iskb
           , PB_XB+Security_XB+TD_XB  XB_aum   
-from temp_bps.wm_assetsclass_2001      /** §ïyymm***/
+from temp_bps.wm_assetsclass_2001      /** æ”¹yymm***/
 where isgeneral_pb+issalary_dp+iskb+istd+ispb_xb+istd_xb+isov_xb+issd_xb+isdcd+isrp
             +ismf+ispsa+ispga+ispvin+isTrust+ishk_pb+ishk_td+ishk_dcd+ishk_mf+isgd+IsSecurity_XB>0
 )  aumsb
 on base.sme_id=aumsb.customer_id 
     
-/***  ecash ªñ¤@¦~¦³log in ***/
+/***  ecash è¿‘ä¸€å¹´æœ‰log in ***/
 left join 
 (
 select  distinct company_id 
 from  Vr_bns_mcif.Ecash_CONTRACT
- where  Contract_Type_code='1'    /**¦Û¦æ¾Ş§@ªº**/
-   and    Contract_Apply_Date>=1100316       /* e-Cash¤W½u¦Ü¤µ */
-   and    Contract_Apply_Date<=cast('20200131' as  date format 'yyyymmdd')       /* §ï¤ë©³¤é */
-   and    coalesce(contract_early_end_date,Contract_End_Date)>cast('20200131' as  date format 'yyyymmdd')  /* §ï¤ë©³¤é */
-  /**ªñ365¤Ñ¦³¹ê°Ê  log in ***/                                   
+ where  Contract_Type_code='1'    /**è‡ªè¡Œæ“ä½œçš„**/
+   and    Contract_Apply_Date>=1100316       /* e-Cashä¸Šç·šè‡³ä»Š */
+   and    Contract_Apply_Date<=cast('20200131' as  date format 'yyyymmdd')       /* æ”¹æœˆåº•æ—¥ */
+   and    coalesce(contract_early_end_date,Contract_End_Date)>cast('20200131' as  date format 'yyyymmdd')  /* æ”¹æœˆåº•æ—¥ */
+  /**è¿‘365å¤©æœ‰å¯¦å‹•  log in ***/                                   
 )  ecash
 on base.sme_id=ecash.company_id                                  
                                    
-  /**¦³¼·Á~ªº¤½¥q*/
+  /**æœ‰æ’¥è–ªçš„å…¬å¸*/
 left  join
 (
        select company_id
        from  temp_retail.Company_Processing_Date_s
-       where  yymm='202001'               /* yyyymm_§ï±ıÆ[¹î¤ë¥÷ */
+       where  yymm='202001'               /* yyyymm_æ”¹æ¬²è§€å¯Ÿæœˆä»½ */
       
 ) sal
  on base.sme_id = sal.company_id
  
-/**»È¥N¦©**/
+/**éŠ€ä»£æ‰£**/
 LEFT join
 (
 select distinct customer_id
 from (select account_nbr,customer_id
-			from vr_bns_mcif.BNS_DEPOSIT_2001    /** §ïyymm***/
+			from vr_bns_mcif.BNS_DEPOSIT_2001    /** æ”¹yymm***/
 			where acct_status_code in ('00')
 			and customer_id is not NULL
 			) a
@@ -306,20 +279,20 @@ inner join
  		from  vr_bns_mcif.PB_DIRECT_DEDUCTS
  		qualify rank() over (partition by Passbook_Acct_Nbr,txn_code order by txn_date desc) =1
  		where Direct_Debit_Status_Code='1'
- 			and Apply_Date<=cast('20200131' as  date format 'yyyymmdd')  /* §ï¤ë©³¤é */
+ 			and Apply_Date<=cast('20200131' as  date format 'yyyymmdd')  /* æ”¹æœˆåº•æ—¥ */
  			and  Passbook_Acct_Nbr is not NULL
   		)  b
   on a.account_nbr=b. Passbook_Acct_Nbr
 ) deduct
 on base.sme_id=deduct.customer_id
-/*SME´¿°µ¹LLoan*/
+/*SMEæ›¾åšéLoan*/
 left join (
 select distinct customer_id from vp_bns_mcif.bns_loan
 union 
 select distinct customer_id from vc_bns_mcif.bns_loan
  ) l
 on base.sme_id = l.customer_id
-/*2001¦³SME_Loan*/
+/*2001æœ‰SME_Loan*/
  left join 
 (
 select customer_id
@@ -331,7 +304,34 @@ where  snapshot_Yr_mth/100-10000=2001
 and lcl_ind+lsl05_ind>0
 ) lum
 on base.sme_id=lum.customer_id
-/*´¿Á{Âd¥æ©ö*/
+/************************************å¾€ä¾†é—œä¿‚************************************/
+/*SMEOæœ‰ç†å°ˆ*/
+/*å¡æ´»èº(1908-2001æœ‰åˆ·å¡)*/
+left join (select distinct party_id from vdm_sem.cc_bill_spending Where txn_dt between  1190801 and 1200131) cc on base.smeo_id = cc.party_id 
+/*å¡æ´»èº(1902-1907æœ‰åˆ·å¡)*/
+left join (select distinct party_id from vdm_sem.cc_bill_spending Where txn_dt between  1190201 and 1190731) cc2 on base.smeo_id = cc2.party_id
+/*å¡æ´»èº_æœ‰å¡*/
+left join (select distinct Primary_Party_Id from vdm_sem.cc_agreement_m    /*å¡ç‰‡æª”*/                                                                                                                       										
+	where primary_party_group_cd='I'                                                                                                                               										
+	    and card_circulation_cd='0'                                                                                                                                  										
+	    and snapshot_yr_mth= 1200101
+	    and substr(product_id,12,3)  not like all ('160','189','0%', '_99')										
+	    and card_circulation_cd='0'										
+	    and card_ownership_cd='1' /*1='æ­£å¡' 2='é™„å¡'*/ ) cc3
+	on base.smeo_id = cc3.Primary_Party_Id
+/*SMEO AUM */
+left join (select customer_id , asset_bal from temp_bps.wm_assetsclass_2001 ) aum on base.smeo_id = aum.customer_id
+/*ç‰¹åº—æœˆæ”¶å–®é‡‘é¡*/
+left join ( Select corporate_id , sum(Txn_Amt) as Txn_Amt 
+			from (Select merchant_nbr From Temp_SPD.PMT_Payment_Detail) a
+			left outer join (SEL  corporate_id , mer_party_id  FROM vdm_sem.merchant_profile  ) b on a.merchant_nbr =b.mer_party_id
+			left join (select merchant_nbr ,sum(transaction_amt) as Txn_Amt /**æ”¶å–®é‡**/ 
+					    From Temp_SPD.PMT_Payment_Detail
+						Where transaction_posting_date between 1200101 and 1200131 /**è¨­å®šåˆ†ææœŸé–“**/
+						group by merchant_nbr) c on a.merchant_nbr = c.merchant_nbr
+			group by corporate_id
+) as mer on base.smeo_id = mer.corporate_id
+/*æ›¾è‡¨æ«ƒäº¤æ˜“*/
 left join (
 select customer_Id , max(txn_Date) as txn_date from vp_bns_mcif.bns_deposit a
 left join vr_bns_mcif.BNS_DEP_FINANCIAL_TXN b on a.account_nbr = b.account_nbr
@@ -339,72 +339,73 @@ where Txn_Date >= 1190801 and Txn_Channel_Code = '0'
 group by customer_id 
 ) b_txn
 on base.sme_id = b_txn.customer_id
+
 ) with data;
 
 -------------------------------------------------------------------------------------------------------------------------------
-/*¤jªí¦A¥[¤J¬dªíªkÀç¦¬*/
+/*å¤§è¡¨å†åŠ å…¥æŸ¥è¡¨æ³•ç‡Ÿæ”¶*/
 create table temp_analysisdev.Z35615_SME_S3 as
     (select base.*
-	,case when capital >= 30000000 or trade_flag in ('06_500-1000W' , '07_1000W¥H¤W') or wp.sales >= 100000000
-	      then 1 else 0 end as TA --¥Ø¼Ğ«È¤á
-	,wp.sales --¹w¦ôÀç¦¬(¬dªíªk)  ³æ¦ì¡G¤¸
-    ,case when wp.sales < 3000000 then 1 else 0 end as under_300W --Àç¦¬300¸U
+	,case when capital >= 30000000 or trade_flag in ('06_500-1000W' , '07_1000Wä»¥ä¸Š') or wp.sales >= 100000000
+	      then 1 else 0 end as TA --ç›®æ¨™å®¢æˆ¶
+	,wp.sales --é ä¼°ç‡Ÿæ”¶(æŸ¥è¡¨æ³•)  å–®ä½ï¼šå…ƒ
+    ,case when wp.sales < 3000000 then 1 else 0 end as under_300W --ç‡Ÿæ”¶300è¬
 
 	,case when channel_code in ('ECC') then 'ECC' else 'SCC' end as SEG_type1
-	,case when target_flag in ('C1:ECCªkª÷«È¤á','C2:SCCªkª÷«È¤á','C3:BFAªkª÷«È¤á','G0.¤@¯ëSB¤á') then 'A.¥i¸gÀç'
-		when target_flag in ('M0:¯Â¦¬³æ') then 'B.¯Â¦¬³æ'
-		when target_flag in ('S1.±M1¡G¯S©wªk¤H','S2.±M2¡G±M¤á«H°U','S3.±M3¡G¥x±m±M¤á','S4.±M4¡G¹B±m±M¤á') then 'C.¤£¥i¬I¤O'
-		else 'D.¨ä¥L' end as SEG_type2
+	,case when target_flag in ('C1:ECCæ³•é‡‘å®¢æˆ¶','C2:SCCæ³•é‡‘å®¢æˆ¶','C3:BFAæ³•é‡‘å®¢æˆ¶','G0.ä¸€èˆ¬SBæˆ¶') then 'A.å¯ç¶“ç‡Ÿ'
+		when target_flag in ('M0:ç´”æ”¶å–®') then 'B.ç´”æ”¶å–®'
+		when target_flag in ('S1.å°ˆ1ï¼šç‰¹å®šæ³•äºº','S2.å°ˆ2ï¼šå°ˆæˆ¶ä¿¡è¨—','S3.å°ˆ3ï¼šå°å½©å°ˆæˆ¶','S4.å°ˆ4ï¼šé‹å½©å°ˆæˆ¶') then 'C.ä¸å¯æ–½åŠ›'
+		else 'D.å…¶ä»–' end as SEG_type2
 	
-	,case when base_flag in ('¬J¦³¤á') and SEG_type1 in ('ECC') then '¬J¦³¤á_ECC'
-		WHEN base_flag in ('¬J¦³¤á') and SEG_type1 NOT in ('ECC') then '¬J¦³¤á_SCC'
-		WHEN base_flag in ('¼ç¤O¤á') and TA in (1) then '¼ç¤O¤á_ECC'
-		WHEN base_flag in ('¼ç¤O¤á') and TA not in (1) then '¼ç¤O¤á_SCC'
-		else '¨ä¥L' end as SEG
-	,case WHEN base_flag in ('¼ç¤O¤á') and TA in (1) then '1-C'
-		WHEN base_flag in ('¼ç¤O¤á') and TA not in (1) then '2-B'
-		when base_flag in ('¬J¦³¤á') and SEG_type1 in ('ECC') then '1-A'
-		WHEN base_flag in ('¬J¦³¤á') and SEG_type1 NOT in ('ECC') and TA in (1) then '1-B'
+	,case when base_flag in ('æ—¢æœ‰æˆ¶') and SEG_type1 in ('ECC') then 'æ—¢æœ‰æˆ¶_ECC'
+		WHEN base_flag in ('æ—¢æœ‰æˆ¶') and SEG_type1 NOT in ('ECC') then 'æ—¢æœ‰æˆ¶_SCC'
+		WHEN base_flag in ('æ½›åŠ›æˆ¶') and TA in (1) then 'æ½›åŠ›æˆ¶_ECC'
+		WHEN base_flag in ('æ½›åŠ›æˆ¶') and TA not in (1) then 'æ½›åŠ›æˆ¶_SCC'
+		else 'å…¶ä»–' end as SEG
+	,case WHEN base_flag in ('æ½›åŠ›æˆ¶') and TA in (1) then '1-C'
+		WHEN base_flag in ('æ½›åŠ›æˆ¶') and TA not in (1) then '2-B'
+		when base_flag in ('æ—¢æœ‰æˆ¶') and SEG_type1 in ('ECC') then '1-A'
+		WHEN base_flag in ('æ—¢æœ‰æˆ¶') and SEG_type1 NOT in ('ECC') and TA in (1) then '1-B'
 		else '2-A' end as SEG2
 		
-	,case when clase_comp IN (1) then '01.°±·²·~'  --¦n¤HWaterfall
-		when Bad_Law IN (1) then '02.­«¤j¶D³^®×'
-		when Bad_Yr IN (1) then '03.¶}·~¦~¸ê¥¼º¡¤@¦~'
-		when under_300W IN (1) then '04.Àç¦¬¤p©ó300¸U'
-		when Bad_TBRG IN (1) then '05.SMEO­·ÀIµûµ¥TBRG<=5'
-		else '99.¦n¤H«È¤á' end as GP_Waterfall
-	,case when target_flag in ('M0:¯Â¦¬³æ') then '¯Â¦¬³æ'
-		when target_flag not in ('M0:¯Â¦¬³æ') and TTL_Dp >= 0 and TTL_Dp < 500000 then 'SBL0'
-		when target_flag not in ('M0:¯Â¦¬³æ') and TTL_Dp >= 500000 and TTL_Dp < 1500000 then 'SBL1'
-		when target_flag not in ('M0:¯Â¦¬³æ') and TTL_Dp >= 1500000 and TTL_Dp < 5000000 then 'SBL2'
-		when target_flag not in ('M0:¯Â¦¬³æ') and TTL_Dp >= 5000000 and TTL_Dp < 15000000 then 'SBL3'
-		when target_flag not in ('M0:¯Â¦¬³æ') and TTL_Dp >= 15000000 and TTL_Dp < 30000000 then 'SBL4'
-		when target_flag not in ('M0:¯Â¦¬³æ') and TTL_Dp >= 30000000 then 'SBL5'
-		else '¨ä¥L' end as SBL
-	,case when degree is not null then '¦³²z±M' else 'µL²z±M' end as FA_SEG_type1
-	,case when degree is not null then '¦³²z±M' 
-		when degree is null and CC_active_6M = 1 then 'µL²z±M_¥d¬¡ÅD'
-		when degree is null and CC_active_6M = 0 and SMEO_AUML in ('A.50¸U¥H¤W' , 'B.10-50¸U') then 'µL²z±M_°ª¦s¿n'
-		else '¨ä¥LµL²z±M' end as FA_SEG_type2
-	,case when set_yr_yyymmdd is null then '00.µL¸ê®Æ'
-		when set_yr_yyymmdd <= 10000 then '01.¶}·~¥¼º¡¤@¦~'
-		when set_yr_yyymmdd > 10000 and set_yr_yyymmdd <= 30000 then '02.¶}·~1-3¦~'
-		else '03.¶}·~3¦~¥H¤W' end as set_yr_level
-	,case when wp.sales is null then '00.µL¸ê®Æ'
-		when wp.sales < 3000000 then '01.¥¼¹F300W'
+	,case when clase_comp IN (1) then '01.åœæ­‡æ¥­'  --å¥½äººWaterfall
+		when Bad_Law IN (1) then '02.é‡å¤§è¨´è¨Ÿæ¡ˆ'
+		when Bad_Yr IN (1) then '03.é–‹æ¥­å¹´è³‡æœªæ»¿ä¸€å¹´'
+		when under_300W IN (1) then '04.ç‡Ÿæ”¶å°æ–¼300è¬'
+		when Bad_TBRG IN (1) then '05.SMEOé¢¨éšªè©•ç­‰TBRG<=5'
+		else '99.å¥½äººå®¢æˆ¶' end as GP_Waterfall
+	,case when target_flag in ('M0:ç´”æ”¶å–®') then 'ç´”æ”¶å–®'
+		when target_flag not in ('M0:ç´”æ”¶å–®') and TTL_Dp >= 0 and TTL_Dp < 500000 then 'SBL0'
+		when target_flag not in ('M0:ç´”æ”¶å–®') and TTL_Dp >= 500000 and TTL_Dp < 1500000 then 'SBL1'
+		when target_flag not in ('M0:ç´”æ”¶å–®') and TTL_Dp >= 1500000 and TTL_Dp < 5000000 then 'SBL2'
+		when target_flag not in ('M0:ç´”æ”¶å–®') and TTL_Dp >= 5000000 and TTL_Dp < 15000000 then 'SBL3'
+		when target_flag not in ('M0:ç´”æ”¶å–®') and TTL_Dp >= 15000000 and TTL_Dp < 30000000 then 'SBL4'
+		when target_flag not in ('M0:ç´”æ”¶å–®') and TTL_Dp >= 30000000 then 'SBL5'
+		else 'å…¶ä»–' end as SBL
+	,case when degree is not null then 'æœ‰ç†å°ˆ' else 'ç„¡ç†å°ˆ' end as FA_SEG_type1
+	,case when degree is not null then 'æœ‰ç†å°ˆ' 
+		when degree is null and CC_active_6M = 1 then 'ç„¡ç†å°ˆ_å¡æ´»èº'
+		when degree is null and CC_active_6M = 0 and SMEO_AUML in ('A.50è¬ä»¥ä¸Š' , 'B.10-50è¬') then 'ç„¡ç†å°ˆ_é«˜å­˜ç©'
+		else 'å…¶ä»–ç„¡ç†å°ˆ' end as FA_SEG_type2
+	,case when set_yr_yyymmdd is null then '00.ç„¡è³‡æ–™'
+		when set_yr_yyymmdd <= 10000 then '01.é–‹æ¥­æœªæ»¿ä¸€å¹´'
+		when set_yr_yyymmdd > 10000 and set_yr_yyymmdd <= 30000 then '02.é–‹æ¥­1-3å¹´'
+		else '03.é–‹æ¥­3å¹´ä»¥ä¸Š' end as set_yr_level
+	,case when wp.sales is null then '00.ç„¡è³‡æ–™'
+		when wp.sales < 3000000 then '01.æœªé”300W'
 		when wp.sales >= 3000000 and wp.sales < 10000000 then '02.300-1000W'
 		when wp.sales >= 10000000 and wp.sales < 30000000 then '03.1000-3000W'
 		when wp.sales >= 30000000 and wp.sales < 50000000 then '04.3000-5000W'
 		when wp.sales >= 50000000 and wp.sales < 100000000 then '05.5000W-1E'
-		else '06.1E¥H¤W' end as sales_level
+		else '06.1Eä»¥ä¸Š' end as sales_level
 	,CASE WHEN capital is null then '00.NA'
-		when capital > 0 and capital < 10000000 then '01.0-1¥a¸U'
-		when capital >= 10000000 and capital < 30000000 then '02.1-3¥a¸U'
-		when capital >= 30000000 and capital < 100000000 then '03.3¥a¸U-1»õ'
-		else '04.1»õ¥H¤W' end as capital_level2
+		when capital > 0 and capital < 10000000 then '01.0-1ä»Ÿè¬'
+		when capital >= 10000000 and capital < 30000000 then '02.1-3ä»Ÿè¬'
+		when capital >= 30000000 and capital < 100000000 then '03.3ä»Ÿè¬-1å„„'
+		else '04.1å„„ä»¥ä¸Š' end as capital_level2
 	--,base.capital_level
 	,case when trade_flag in ('02_0-50W' ,'03_50-100W' , '04_100-300W' ,'05_300-500W' ) then '01.0-500W'
-		when trade_flag in ('06_500-1000W' , '07_1000W¥H¤W' ) then '02.500W¥H¤W'
+		when trade_flag in ('06_500-1000W' , '07_1000Wä»¥ä¸Š' ) then '02.500Wä»¥ä¸Š'
 		else '0' end as trade_level
 	,vp.membership
 	,target_flag
@@ -412,20 +413,20 @@ create table temp_analysisdev.Z35615_SME_S3 as
 	from temp_analysisdev.Z35615_SME_S2 base
 	left join temp_analysisdev.SME_WhitePaper2018 as wp on wp.Industry = base.ind_type and wp.Capital_Level = base.Capital_Level
 	left join (select sme_id , smeo_id , target_flag , channel_code from temp_analysisdev.Z35615_SMEBase_2001) as a on base.sme_id = a.sme_id
-	left join (select customer_id , coalesce(general_pb,0) general_pb , coalesce(td,0) td --¤@¯ë¬¡¦s¡B©w¦s
-				,coalesce(pb_xb,0) pb,coalesce(td_xb,0) td_xb  --¥~¹ô¬¡¦s¡B¥~¹ô©w¦s
+	left join (select customer_id , coalesce(general_pb,0) general_pb , coalesce(td,0) td --ä¸€èˆ¬æ´»å­˜ã€å®šå­˜
+				,coalesce(pb_xb,0) pb,coalesce(td_xb,0) td_xb  --å¤–å¹£æ´»å­˜ã€å¤–å¹£å®šå­˜
 				,coalesce(general_pb,0)+coalesce(td,0)+coalesce(pb_xb,0)+coalesce(td_xb,0) as TTL_Dp
 			from temp_bps.wm_assetsclass_2001 ) dp on base.sme_id = dp.customer_id
-	left join (select customer_id ,membership from temp_bps.wm_segment_2001) as VP on base.smeo_id = vp.customer_id  --¾ã­Ó­Óª÷Base 
+	left join (select customer_id ,membership from temp_bps.wm_segment_2001) as VP on base.smeo_id = vp.customer_id  --æ•´å€‹å€‹é‡‘Base 
 
 ) with data
 ---------------------------------------------------------------------------------------------------------------------------------------------------------
-/*·s¼W7¤j²£«~§PÂ_*/
+/*æ–°å¢7å¤§ç”¢å“åˆ¤æ–·*/
 select a.* 
-,case when sales is null then '00.µL¸ê®Æ'
+,case when sales is null then '00.ç„¡è³‡æ–™'
 		when sales < 10000000 then '01.0-1000W'
 		when sales >= 10000000 and sales < 30000000 then '02.1000-3000W'
-		else '03.3000W¥H¤W' end as sales_level2
+		else '03.3000Wä»¥ä¸Š' end as sales_level2
 ,case when aumsb.iskb >0 then 1 else 0 end as iskb_flag
 ,case when aumsb.xb_aum>0  then 1 else 0 end as xb_aum_flag
 ,case when ecash.company_id is not NULL  then 1 else 0 end as ecash_flag
@@ -442,7 +443,7 @@ select a.*
 +zeroifnull(b.merchant_ind)
 +(case when deduct.customer_id   is not NULL then 1 else 0 end)
 +zeroifnull(b.SME_loan_ind)
-) ph7   /*²£«~«ù¦³¼Æ*/
+) ph7   /*ç”¢å“æŒæœ‰æ•¸*/
 ,(
 (case when aumsb.iskb>0  then 1 else 0 end)
 +(case when aumsb.xb_aum>0  then 1 else 0 end)
@@ -450,21 +451,21 @@ select a.*
 +(case when sal.company_id is not NULL  then 1 else 0 end)
 +zeroifnull(b.merchant_ind)
 +zeroifnull(b.SME_loan_ind)
-) ph6   /*²£«~«ù¦³¼Æ*/
+) ph6   /*ç”¢å“æŒæœ‰æ•¸*/
 ,case when FA_SEG_type1 is not null or (CC_active_6M = 1) or 
 
 from temp_analysisdev.Z35615_SME_S3 a
-/***  ¦¬³æ¤á¡BSME_LOAN  ***/
+/***  æ”¶å–®æˆ¶ã€SME_LOAN  ***/
 left join 
 	(select *
 	  from temp_analysisdev.party_SME_segment_M 
 	  where snapshot_Yr_mth/100-10000=2001
-	  and (( business_line_code<>'2'  or  business_line_code is NULL)   --°Ï¤ÀºŞ²zÅv­­!!!
+	  and (( business_line_code<>'2'  or  business_line_code is NULL)   --å€åˆ†ç®¡ç†æ¬Šé™!!!
 			 or (business_line_code='2' and channel_code is not NULL) 
 		  )
 	  ) b
 	on a.sme_id = b.sme_id
-/*** ¤ä¦s¡B¥~¹ô ***/
+/*** æ”¯å­˜ã€å¤–å¹£ ***/
 left join 
 (
 select customer_id
@@ -480,41 +481,41 @@ select customer_id
           ,SD_XB+DCD+DSD+Trust+GD+HK_DCD+HK_MF  oth_fee_aum
           ,iskb
           , PB_XB+Security_XB+TD_XB  XB_aum   
-from temp_bps.wm_assetsclass_2001      /** §ïyymm***/
+from temp_bps.wm_assetsclass_2001      /** æ”¹yymm***/
 where isgeneral_pb+issalary_dp+iskb+istd+ispb_xb+istd_xb+isov_xb+issd_xb+isdcd+isrp
             +ismf+ispsa+ispga+ispvin+isTrust+ishk_pb+ishk_td+ishk_dcd+ishk_mf+isgd+IsSecurity_XB>0
 )  aumsb
 on a.sme_id=aumsb.customer_id 
     
-/***  ecash ªñ¤@¦~¦³log in ***/
+/***  ecash è¿‘ä¸€å¹´æœ‰log in ***/
 left join 
 (
 select  distinct company_id 
 from  Vr_bns_mcif.Ecash_CONTRACT
- where  Contract_Type_code='1'    /**¦Û¦æ¾Ş§@ªº**/
-   and    Contract_Apply_Date>=1100316       /* e-Cash¤W½u¦Ü¤µ */
-   and    Contract_Apply_Date<=cast('20200131' as  date format 'yyyymmdd')       /* §ï¤ë©³¤é */
-   and    coalesce(contract_early_end_date,Contract_End_Date)>cast('20200131' as  date format 'yyyymmdd')  /* §ï¤ë©³¤é */
-  /**ªñ365¤Ñ¦³¹ê°Ê  log in ***/                                   
+ where  Contract_Type_code='1'    /**è‡ªè¡Œæ“ä½œçš„**/
+   and    Contract_Apply_Date>=1100316       /* e-Cashä¸Šç·šè‡³ä»Š */
+   and    Contract_Apply_Date<=cast('20200131' as  date format 'yyyymmdd')       /* æ”¹æœˆåº•æ—¥ */
+   and    coalesce(contract_early_end_date,Contract_End_Date)>cast('20200131' as  date format 'yyyymmdd')  /* æ”¹æœˆåº•æ—¥ */
+  /**è¿‘365å¤©æœ‰å¯¦å‹•  log in ***/                                   
 )  ecash
 on a.sme_id=ecash.company_id                                  
                                    
-  /**¦³¼·Á~ªº¤½¥q*/
+  /**æœ‰æ’¥è–ªçš„å…¬å¸*/
 left  join
 (
        select company_id
        from  temp_retail.Company_Processing_Date_s
-       where  yymm='202001'               /* yyyymm_§ï±ıÆ[¹î¤ë¥÷ */
+       where  yymm='202001'               /* yyyymm_æ”¹æ¬²è§€å¯Ÿæœˆä»½ */
       
 ) sal
  on a.sme_id = sal.company_id
  
-/**»È¥N¦©**/
+/**éŠ€ä»£æ‰£**/
 LEFT join
 (
 select distinct customer_id
 from (select account_nbr,customer_id
-			from vr_bns_mcif.BNS_DEPOSIT_2001    /** §ïyymm***/
+			from vr_bns_mcif.BNS_DEPOSIT_2001    /** æ”¹yymm***/
 			where acct_status_code in ('00')
 			and customer_id is not NULL
 			) a
@@ -523,20 +524,20 @@ inner join
  		from  vr_bns_mcif.PB_DIRECT_DEDUCTS
  		qualify rank() over (partition by Passbook_Acct_Nbr,txn_code order by txn_date desc) =1
  		where Direct_Debit_Status_Code='1'
- 			and Apply_Date<=cast('20200131' as  date format 'yyyymmdd')  /* §ï¤ë©³¤é */
+ 			and Apply_Date<=cast('20200131' as  date format 'yyyymmdd')  /* æ”¹æœˆåº•æ—¥ */
  			and  Passbook_Acct_Nbr is not NULL
   		)  b
   on a.account_nbr=b. Passbook_Acct_Nbr
 ) deduct
 on a.sme_id=deduct.customer_id
-/*SME´¿°µ¹LLoan*/
+/*SMEæ›¾åšéLoan*/
 left join (
 select distinct customer_id from vp_bns_mcif.bns_loan
 union 
 select distinct customer_id from vc_bns_mcif.bns_loan
  ) l
 on a.sme_id = l.customer_id
-/*2001¦³SME_Loan*/
+/*2001æœ‰SME_Loan*/
  left join 
 (
 select customer_id
@@ -551,5 +552,17 @@ on base.sme_id=lum.customer_id
 
 
 ------------------------------------------------------------------------------------------------------------------------------------
-/*Â²³ø¼Æ¦r*/
+/*ç°¡å ±æ•¸å­—*/
 select 
+Â© 2020 GitHub, Inc.
+Terms
+Privacy
+Security
+Status
+Help
+Contact GitHub
+Pricing
+API
+Training
+Blog
+About

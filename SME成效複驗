@@ -1,0 +1,138 @@
+select project_name , iskb_flag ,xb_aum_flag ,ecash_flag ,sal_flag ,merchant_ind ,SME_loan_ind , deduct_flag , ever_Loan_flag , ph7,count(sme_id)
+from (
+select BASE.*,l.*
+/*七大產品*/
+	,case when aumsb.iskb >0 then 1 else 0 end as iskb_flag
+	,case when aumsb.xb_aum>0  then 1 else 0 end as xb_aum_flag
+	,case when ecash.company_id is not NULL  then 1 else 0 end as ecash_flag
+	,case when sal.company_id is not NULL  then 1 else 0 end as sal_flag
+	,zeroifnull(b.merchant_ind) as merchant_ind 
+	,zeroifnull(b.SME_loan_ind) as SME_loan_ind 
+	,case when l.customer_id is not null then 1 else 0 end as ever_Loan_flag --曾做過Loan的
+	--,case when lum.customer_id is not null then 1 else 0 end as K_Loan_flag --SME_Loan_Flag(自己額外做的)
+	,case when deduct.customer_id is not null then 1 else 0 end as deduct_flag
+	,(
+	(case when aumsb.iskb>0  then 1 else 0 end)
+	+(case when aumsb.xb_aum>0  then 1 else 0 end)
+	+(case when ecash.company_id is not NULL  then 1 else 0 end)
+	+(case when sal.company_id is not NULL  then 1 else 0 end)
+	+zeroifnull(b.merchant_ind)
+	+(case when deduct.customer_id   is not NULL then 1 else 0 end)
+	+zeroifnull(b.SME_loan_ind)
+	) ph7   /*產品持有數*/
+	
+
+from (
+/*已出過名單*/
+	(select distinct sb_id as sme_id , 'SCC_5371' as project_name from temp_analysisdev.SCC_list1) --SCC第一波(5,371筆)
+	union 
+	(select distinct customer_id as sme_id , 'SCC_4040' as project_name from temp_analysisdev.SCC_list2 ) -- SCC2第二波(4,040筆)
+	union
+	(select distinct sme_id , 'SCC_2470' as project_name from temp_analysisdev.SCC_2470) -- SCC(2,470筆)
+	union
+	(select distinct comp_id as sme_id , 'ECC_105' as project_name from temp_analysisdev.Z44721_SB_FAlist_20200102 ) -- ECC(105筆)
+	union
+	(select distinct sd_id as sme_id , 'ECC_119' as project_name from temp_analysisdev.Z44721_faecc_list_info )  -- ECC(119筆)
+	union 
+	(select distinct "公司統編" as sme_id  , 'SCC_7000' as project_name from temp_analysisdev.Z35615_SCC_24000_v1) --SCC(7,000筆))
+	) base
+
+/************************************七大產品************************************/
+/***  收單戶、SME_LOAN  ***/
+left join 
+	(select *
+	  from temp_bps.party_SME_segment_M
+	  where snapshot_Yr_mth/100-10000=2003
+	  and (( business_line_code<>'2'  or  business_line_code is NULL)   --區分管理權限!!!
+			 or (business_line_code='2' and channel_code is not NULL) 
+		  )
+	  ) b
+	on base.sme_id = b.sme_id
+/*** 支存、外幣 ***/
+left join 
+(
+select customer_id
+          ,asset_bal a_aum  
+          ,General_PB+Salary_DP+KB   PBKB_aum
+          ,TD   TD_aum                          
+          ,PB_XB+Security_XB  PBXB_aum
+          ,TD_XB  TDXB_aum       
+          ,RP+HK_PB+HK_TD+OV_XB+Security_DP  oth_NII_aum
+          ,SD_XB+DCD+MF+DSD+PSA+PGA+PVIN+Trust+GD+HK_DCD+HK_MF  FEE_aum 
+          ,MF  MF_aum                                     
+          ,FEE_aum-MF_aum-oth_fee_aum INS_aum
+          ,SD_XB+DCD+DSD+Trust+GD+HK_DCD+HK_MF  oth_fee_aum
+          ,iskb
+          , PB_XB+Security_XB+TD_XB  XB_aum   
+from temp_bps.wm_assetsclass_2003     /** 改yymm***/
+where isgeneral_pb+issalary_dp+iskb+istd+ispb_xb+istd_xb+isov_xb+issd_xb+isdcd+isrp
+            +ismf+ispsa+ispga+ispvin+isTrust+ishk_pb+ishk_td+ishk_dcd+ishk_mf+isgd+IsSecurity_XB>0
+)  aumsb
+on base.sme_id=aumsb.customer_id 
+    
+/***  ecash 近一年有log in ***/
+left join 
+(
+select  distinct company_id 
+from  Vr_bns_mcif.Ecash_CONTRACT
+ where  Contract_Type_code='1'    /**自行操作的**/
+   and    Contract_Apply_Date>=1100316       /* e-Cash上線至今 */
+   and    Contract_Apply_Date<=cast('20200331' as  date format 'yyyymmdd')       /* 改月底日 */
+   and    coalesce(contract_early_end_date,Contract_End_Date)>cast('20200331' as  date format 'yyyymmdd')  /* 改月底日 */
+  /**近365天有實動  log in ***/                                   
+)  ecash
+on base.sme_id=ecash.company_id                                  
+                                   
+  /**有撥薪的公司*/
+left  join
+(
+       select company_id
+       from  temp_retail.Company_Processing_Date_s
+       where  yymm='202003'               /* yyyymm_改欲觀察月份 */
+      
+) sal
+ on base.sme_id = sal.company_id
+ 
+/**銀代扣**/
+LEFT join
+(
+select distinct customer_id
+from (select account_nbr,customer_id
+			from vr_bns_mcif.BNS_DEPOSIT_2003    /** 改yymm***/
+			where acct_status_code in ('00')
+			and customer_id is not NULL
+			) a
+inner join 
+		(select distinct Passbook_Acct_Nbr
+ 		from  vr_bns_mcif.PB_DIRECT_DEDUCTS
+ 		qualify rank() over (partition by Passbook_Acct_Nbr,txn_code order by txn_date desc) =1
+ 		where Direct_Debit_Status_Code='1'
+ 			and Apply_Date<=cast('20200331' as  date format 'yyyymmdd')  /* 改月底日 */
+ 			and  Passbook_Acct_Nbr is not NULL
+  		)  b
+  on a.account_nbr=b. Passbook_Acct_Nbr
+) deduct
+on base.sme_id=deduct.customer_id
+/*SME曾做過Loan*/
+left join (
+(select customer_id ,  Account_Nbr ,  Approval_Date, Application_Date ,Approval_Amt , Application_Amt ,Current_Bal, Acct_Status_Code 
+ from vp_bns_mcif.bns_loan )--where Acct_Status_Code not in ('40') )
+union 
+(select customer_id ,  Account_Nbr , Application_Date ,  Approval_Date , Application_Amt ,Approval_Amt ,Current_Bal, Acct_Status_Code 
+ from vc_bns_mcif.bns_loan ) --where Acct_Status_Code not in ('40') )
+ ) l
+on base.sme_id = l.customer_id
+/*2003有SME_Loan*/
+ left join 
+(
+select customer_id
+,bal LUM
+,lcl_bal SME_CB_loan_bal
+,lsl05_bal SME_RB_loan_bal
+from temp_bps.party_sme_lum
+where  snapshot_Yr_mth/100-10000=2003
+and lcl_ind+lsl05_ind>0
+) lum
+on base.sme_id=lum.customer_id
+) tt
+group by 1,2,3,4,5,6,7,8,9,10

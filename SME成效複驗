@@ -1,15 +1,19 @@
-select project_name , iskb_flag ,xb_aum_flag ,ecash_flag ,sal_flag ,merchant_ind ,SME_loan_ind , deduct_flag , ever_Loan_flag , ph7,count(sme_id)
+
+test/SMEæˆæ•ˆè¤‡é©—
+/*create é›»å•† ã€è£œæ—¥æœŸ*/
+create multiset table temp_analysisdev.Z35615_base_cnt as  (
+select project_name ,sme_id , iskb_flag ,xb_aum_flag ,ecash_flag ,sal_flag ,merchant_ind ,SME_loan_ind , deduct_flag , ever_Loan_flag , ph7
 from (
 select BASE.*,l.*
-/*¤C¤j²£«~*/
+/*ä¸ƒå¤§ç”¢å“*/
 	,case when aumsb.iskb >0 then 1 else 0 end as iskb_flag
 	,case when aumsb.xb_aum>0  then 1 else 0 end as xb_aum_flag
 	,case when ecash.company_id is not NULL  then 1 else 0 end as ecash_flag
 	,case when sal.company_id is not NULL  then 1 else 0 end as sal_flag
 	,zeroifnull(b.merchant_ind) as merchant_ind 
 	,zeroifnull(b.SME_loan_ind) as SME_loan_ind 
-	,case when l.customer_id is not null then 1 else 0 end as ever_Loan_flag --´¿°µ¹LLoanªº
-	--,case when lum.customer_id is not null then 1 else 0 end as K_Loan_flag --SME_Loan_Flag(¦Û¤vÃB¥~°µªº)
+	,case when l.customer_id is not null then 1 else 0 end as ever_Loan_flag --æ›¾åšéLoançš„
+	--,case when lum.customer_id is not null then 1 else 0 end as K_Loan_flag --SME_Loan_Flag(è‡ªå·±é¡å¤–åšçš„)
 	,case when deduct.customer_id is not null then 1 else 0 end as deduct_flag
 	,(
 	(case when aumsb.iskb>0  then 1 else 0 end)
@@ -19,36 +23,36 @@ select BASE.*,l.*
 	+zeroifnull(b.merchant_ind)
 	+(case when deduct.customer_id   is not NULL then 1 else 0 end)
 	+zeroifnull(b.SME_loan_ind)
-	) ph7   /*²£«~«ù¦³¼Æ*/
+	) ph7   /*ç”¢å“æŒæœ‰æ•¸*/
 	
 
 from (
-/*¤w¥X¹L¦W³æ*/
-	(select distinct sb_id as sme_id , 'SCC_5371' as project_name from temp_analysisdev.SCC_list1) --SCC²Ä¤@ªi(5,371µ§)
+/*å·²å‡ºéåå–®*/
+	(select distinct sb_id as sme_id , 'SCC_5371' as project_name from temp_analysisdev.SCC_list1) --SCCç¬¬ä¸€æ³¢(5,371ç­†)
 	union 
-	(select distinct customer_id as sme_id , 'SCC_4040' as project_name from temp_analysisdev.SCC_list2 ) -- SCC2²Ä¤Gªi(4,040µ§)
+	(select distinct customer_id as sme_id , 'SCC_4040' as project_name from temp_analysisdev.SCC_list2 ) -- SCC2ç¬¬äºŒæ³¢(4,040ç­†)
 	union
-	(select distinct sme_id , 'SCC_2470' as project_name from temp_analysisdev.SCC_2470) -- SCC(2,470µ§)
+	(select distinct sme_id , 'SCC_2470' as project_name from temp_analysisdev.SCC_2470) -- SCC(2,470ç­†)
 	union
-	(select distinct comp_id as sme_id , 'ECC_105' as project_name from temp_analysisdev.Z44721_SB_FAlist_20200102 ) -- ECC(105µ§)
+	(select distinct comp_id as sme_id , 'ECC_105' as project_name from temp_analysisdev.Z44721_SB_FAlist_20200102 ) -- ECC(105ç­†)
 	union
-	(select distinct sd_id as sme_id , 'ECC_119' as project_name from temp_analysisdev.Z44721_faecc_list_info )  -- ECC(119µ§)
+	(select distinct sd_id as sme_id , 'ECC_119' as project_name from temp_analysisdev.Z44721_faecc_list_info )  -- ECC(119ç­†)
 	union 
-	(select distinct "¤½¥q²Î½s" as sme_id  , 'SCC_7000' as project_name from temp_analysisdev.Z35615_SCC_24000_v1) --SCC(7,000µ§))
+	(select distinct "å…¬å¸çµ±ç·¨" as sme_id  , 'SCC_7000' as project_name from temp_analysisdev.Z35615_SCC_24000_v1) --SCC(7,000ç­†))
 	) base
 
-/************************************¤C¤j²£«~************************************/
-/***  ¦¬³æ¤á¡BSME_LOAN  ***/
+/************************************ä¸ƒå¤§ç”¢å“************************************/
+/***  æ”¶å–®æˆ¶ã€SME_LOAN  ***/
 left join 
 	(select *
 	  from temp_bps.party_SME_segment_M
 	  where snapshot_Yr_mth/100-10000=2003
-	  and (( business_line_code<>'2'  or  business_line_code is NULL)   --°Ï¤ÀºŞ²zÅv­­!!!
+	  and (( business_line_code<>'2'  or  business_line_code is NULL)   --å€åˆ†ç®¡ç†æ¬Šé™!!!
 			 or (business_line_code='2' and channel_code is not NULL) 
 		  )
 	  ) b
 	on base.sme_id = b.sme_id
-/*** ¤ä¦s¡B¥~¹ô ***/
+/*** æ”¯å­˜ã€å¤–å¹£ ***/
 left join 
 (
 select customer_id
@@ -64,41 +68,41 @@ select customer_id
           ,SD_XB+DCD+DSD+Trust+GD+HK_DCD+HK_MF  oth_fee_aum
           ,iskb
           , PB_XB+Security_XB+TD_XB  XB_aum   
-from temp_bps.wm_assetsclass_2003     /** §ïyymm***/
+from temp_bps.wm_assetsclass_2003     /** æ”¹yymm***/
 where isgeneral_pb+issalary_dp+iskb+istd+ispb_xb+istd_xb+isov_xb+issd_xb+isdcd+isrp
             +ismf+ispsa+ispga+ispvin+isTrust+ishk_pb+ishk_td+ishk_dcd+ishk_mf+isgd+IsSecurity_XB>0
 )  aumsb
 on base.sme_id=aumsb.customer_id 
     
-/***  ecash ªñ¤@¦~¦³log in ***/
+/***  ecash è¿‘ä¸€å¹´æœ‰log in ***/
 left join 
 (
 select  distinct company_id 
 from  Vr_bns_mcif.Ecash_CONTRACT
- where  Contract_Type_code='1'    /**¦Û¦æ¾Ş§@ªº**/
-   and    Contract_Apply_Date>=1100316       /* e-Cash¤W½u¦Ü¤µ */
-   and    Contract_Apply_Date<=cast('20200331' as  date format 'yyyymmdd')       /* §ï¤ë©³¤é */
-   and    coalesce(contract_early_end_date,Contract_End_Date)>cast('20200331' as  date format 'yyyymmdd')  /* §ï¤ë©³¤é */
-  /**ªñ365¤Ñ¦³¹ê°Ê  log in ***/                                   
+ where  Contract_Type_code='1'    /**è‡ªè¡Œæ“ä½œçš„**/
+   and    Contract_Apply_Date>=1100316       /* e-Cashä¸Šç·šè‡³ä»Š */
+   and    Contract_Apply_Date<=cast('20200331' as  date format 'yyyymmdd')       /* æ”¹æœˆåº•æ—¥ */
+   and    coalesce(contract_early_end_date,Contract_End_Date)>cast('20200331' as  date format 'yyyymmdd')  /* æ”¹æœˆåº•æ—¥ */
+  /**è¿‘365å¤©æœ‰å¯¦å‹•  log in ***/                                   
 )  ecash
 on base.sme_id=ecash.company_id                                  
                                    
-  /**¦³¼·Á~ªº¤½¥q*/
+  /**æœ‰æ’¥è–ªçš„å…¬å¸*/
 left  join
 (
        select company_id
        from  temp_retail.Company_Processing_Date_s
-       where  yymm='202003'               /* yyyymm_§ï±ıÆ[¹î¤ë¥÷ */
+       where  yymm='202003'               /* yyyymm_æ”¹æ¬²è§€å¯Ÿæœˆä»½ */
       
 ) sal
  on base.sme_id = sal.company_id
  
-/**»È¥N¦©**/
+/**éŠ€ä»£æ‰£**/
 LEFT join
 (
 select distinct customer_id
 from (select account_nbr,customer_id
-			from vr_bns_mcif.BNS_DEPOSIT_2003    /** §ïyymm***/
+			from vr_bns_mcif.BNS_DEPOSIT_2003    /** æ”¹yymm***/
 			where acct_status_code in ('00')
 			and customer_id is not NULL
 			) a
@@ -107,13 +111,13 @@ inner join
  		from  vr_bns_mcif.PB_DIRECT_DEDUCTS
  		qualify rank() over (partition by Passbook_Acct_Nbr,txn_code order by txn_date desc) =1
  		where Direct_Debit_Status_Code='1'
- 			and Apply_Date<=cast('20200331' as  date format 'yyyymmdd')  /* §ï¤ë©³¤é */
+ 			and Apply_Date<=cast('20200331' as  date format 'yyyymmdd')  /* æ”¹æœˆåº•æ—¥ */
  			and  Passbook_Acct_Nbr is not NULL
   		)  b
   on a.account_nbr=b. Passbook_Acct_Nbr
 ) deduct
 on base.sme_id=deduct.customer_id
-/*SME´¿°µ¹LLoan*/
+/*SMEæ›¾åšéLoan*/
 left join (
 (select customer_id ,  Account_Nbr ,  Approval_Date, Application_Date ,Approval_Amt , Application_Amt ,Current_Bal, Acct_Status_Code 
  from vp_bns_mcif.bns_loan )--where Acct_Status_Code not in ('40') )
@@ -122,7 +126,7 @@ union
  from vc_bns_mcif.bns_loan ) --where Acct_Status_Code not in ('40') )
  ) l
 on base.sme_id = l.customer_id
-/*2003¦³SME_Loan*/
+/*2003æœ‰SME_Loan*/
  left join 
 (
 select customer_id
@@ -135,4 +139,6 @@ and lcl_ind+lsl05_ind>0
 ) lum
 on base.sme_id=lum.customer_id
 ) tt
-group by 1,2,3,4,5,6,7,8,9,10
+) with data ;
+
+

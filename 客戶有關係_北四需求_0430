@@ -1,0 +1,246 @@
+/****重複資料判別整理*****/
+create table temp_analysisdev.Z35615_AO as ( 
+select sme_id ,smeo_id from temp_analysisdev.Z35615_SME_S3 a
+left join 
+(
+sel customer_id
+    , region_name	
+    , branch_cat	
+    , branch_name	
+    , fb_name as Employee_Name	
+    , a.branch_nbr	
+    , fb_nbr as Employee_Nbr	
+    , fb_ao_code	
+from    	
+(
+sel a.customer_id
+    , case when b.FB_AO_Branch_code='00000' or b.FB_AO_Branch_code is null then a.WM_Branch_Nbr
+               when b.FB_AO_Branch_code is not NULL and b.FB_AO_Branch_code<>'' then substr(trim(b.FB_AO_Branch_code),2,4) 
+              --when a.FB_AO_Branch_nbr='0000' then a.WM_Branch_Nbr 
+               --when a.FB_AO_Branch_nbr is not NULL and a.FB_AO_Branch_nbr<>'' then a.FB_AO_Branch_nbr 
+               else a.WM_Branch_Nbr 
+      end  as branch_nbr
+    , substr(trim(b.FB_AO_Branch_code),2,4) as FB_AO_Branch_nbr 
+    , b.fb_ao_code 
+    --, a.FB_AO_Branch_nbr 
+    --, a.fb_ao_code 
+    , b.fb_nbr
+    , b.fb_name
+from vp_drv_model.DRV_CUST_BANK_INFO_M a
+
+left join temp_BRSUP.WM_AO_200327   b    --改月最後一個週五
+on trim(a.customer_id)=trim(b.customer_id) 
+where snapshot_yr_mth = '20200301'  --改
+) a
+left join (sel * from vp_drv_model.DRV_BRANCH_m where Snapshot_yr_mth=1200301)  br     --改
+on trim(a.branch_nbr)=trim(br.branch_nbr)
+/*left join  vr_bns_mcif.bns_ao  as  ao
+on a.FB_AO_Branch_nbr=substr(ao.branch_nbr,2,4) and a.fb_ao_code=ao.ao_code*/
+--where customer_id in (sel customer_id from temp_sweep_d.z16551_AQ_review_Base)
+
+) ao
+on a.smeo_id=ao.customer_id
+where SEG2 in ('1-C','2-B')  /*改*/
+and a.sme_id not in (select distinct customer_id from temp_analysisdev.Z35615_Closed_200407 
+					union 
+				   select distinct customer_id from temp_analysisdev.Z35615_OtherClosed_0407) --停歇業
+and substr(ao.fb_ao_code,2,1) in ('1','2','3','4','5')
+) with data ;
+/*******************************************************************************************************/
+/*老闆有關係*/
+select a.SEG2 , a.sme_id 
+--,substr(a.smeo_id,2,9) as smeo_id
+,'*'||substr(a.smeo_id,2,3)||'****'||substr(a.smeo_id,9,2) as sme_id  
+, a.sme_name , b.pure_sec ,b.business_line_code ,b.pool ,b.membership
+,ao.region_name	, ao.branch_cat, ao.branch_name, ao.Employee_Name , ao.branch_nbr , ao.Employee_Nbr , ao.fb_ao_code	 
+,c.organ_type , c.date_of_incorporation , c.capital , c.industry_code, c.industry_desc , c.invoice_flag , c.address
+,d1.sme_cnt , d2.smeo_cnt
+,case when d1.sme_id is not null then 1 else 0 end as sme_dup
+,case when d2.smeo_id is not null then 1 else 0 end as smeo_dup
+,substr(fb_ao_code,2,1) as AO_level 
+,case when sme_dup = 1 and smeo_dup = 1 then 'R_C'
+	when sme_dup = 1 then 'C'
+	when smeo_dup = 1 then 'R'
+	else 'U' end as mapping_type
+,asset_bal as AUM
+/*七大產品*/
+	,case when aumsb.iskb >0 then 1 else 0 end as iskb_flag
+	,case when aumsb.xb_aum>0  then 1 else 0 end as xb_aum_flag
+	,case when ecash.company_id is not NULL  then 1 else 0 end as ecash_flag
+	,case when sal.company_id is not NULL  then 1 else 0 end as sal_flag
+	,zeroifnull(bb.merchant_ind) as merchant_ind 
+	,zeroifnull(bb.SME_loan_ind) as SME_loan_ind 
+	,case when deduct.customer_id is not null then 1 else 0 end as deduct_flag
+
+
+from temp_analysisdev.Z35615_SME_S3 as a
+left join temp_bps.wm_segment_2003 as b on a.smeo_id = b.customer_id  --wm_segment
+left join temp_analysisdev.Z35615_BGM_200407 as c on a.sme_id = c.customer_id  --營業中
+/*AO資訊*/
+left join 
+(
+sel customer_id
+    , region_name	
+    , branch_cat	
+    , branch_name	
+    , fb_name as Employee_Name	
+    , a.branch_nbr	
+    , fb_nbr as Employee_Nbr	
+    , fb_ao_code	
+from    	
+(
+sel a.customer_id
+    , case when b.FB_AO_Branch_code='00000' or b.FB_AO_Branch_code is null then a.WM_Branch_Nbr
+               when b.FB_AO_Branch_code is not NULL and b.FB_AO_Branch_code<>'' then substr(trim(b.FB_AO_Branch_code),2,4) 
+              --when a.FB_AO_Branch_nbr='0000' then a.WM_Branch_Nbr 
+               --when a.FB_AO_Branch_nbr is not NULL and a.FB_AO_Branch_nbr<>'' then a.FB_AO_Branch_nbr 
+               else a.WM_Branch_Nbr 
+      end  as branch_nbr
+    , substr(trim(b.FB_AO_Branch_code),2,4) as FB_AO_Branch_nbr 
+    , b.fb_ao_code 
+    --, a.FB_AO_Branch_nbr 
+    --, a.fb_ao_code 
+    , b.fb_nbr
+    , b.fb_name
+from vp_drv_model.DRV_CUST_BANK_INFO_M a
+
+left join temp_BRSUP.WM_AO_200327   b    --改月最後一個週五
+on trim(a.customer_id)=trim(b.customer_id) 
+where snapshot_yr_mth = '20200301'  --改
+) a
+left join (sel * from vp_drv_model.DRV_BRANCH_m where Snapshot_yr_mth=1200301)  br     --改
+on trim(a.branch_nbr)=trim(br.branch_nbr)
+/*left join  vr_bns_mcif.bns_ao  as  ao
+on a.FB_AO_Branch_nbr=substr(ao.branch_nbr,2,4) and a.fb_ao_code=ao.ao_code*/
+--where customer_id in (sel customer_id from temp_sweep_d.z16551_AQ_review_Base)
+
+) ao
+on a.smeo_id=ao.customer_id
+left join (select sme_id , count(*) as sme_cnt from temp_analysisdev.Z35615_AO group by sme_id having count(*) > 1 ) as d1 
+	on a.sme_id = d1.sme_id    --SME重複
+left join (select smeo_id , count(*) as smeo_cnt from temp_analysisdev.Z35615_AO group by smeo_id having count(*) > 1 ) as d2 
+	on a.smeo_id= d2.smeo_id   --SMEO重複
+--- AUM ---
+left join ( select distinct customer_id ,asset_bal from temp_bps.wm_assetsclass_2004 ) as aum on a.smeo_id = aum.customer_id
+/***  收單戶、SME_LOAN  ***/
+left join 
+	(select *
+	  from temp_bps.party_SME_segment_M
+	  where snapshot_Yr_mth/100-10000=2004
+	  and (( business_line_code<>'2'  or  business_line_code is NULL)   --區分管理權限!!!
+			 or (business_line_code='2' and channel_code is not NULL) 
+		  )
+	  ) bb
+	on a.sme_id = bb.sme_id
+/*** 支存、外幣 ***/
+left join 
+(
+select customer_id
+          ,asset_bal a_aum  
+          ,General_PB+Salary_DP+KB   PBKB_aum
+          ,TD   TD_aum                          
+          ,PB_XB+Security_XB  PBXB_aum
+          ,TD_XB  TDXB_aum       
+          ,RP+HK_PB+HK_TD+OV_XB+Security_DP  oth_NII_aum
+          ,SD_XB+DCD+MF+DSD+PSA+PGA+PVIN+Trust+GD+HK_DCD+HK_MF  FEE_aum 
+          ,MF  MF_aum                                     
+          ,FEE_aum-MF_aum-oth_fee_aum INS_aum
+          ,SD_XB+DCD+DSD+Trust+GD+HK_DCD+HK_MF  oth_fee_aum
+          ,iskb
+          , PB_XB+Security_XB+TD_XB  XB_aum   
+from temp_bps.wm_assetsclass_2004      /** 改yymm***/
+where isgeneral_pb+issalary_dp+iskb+istd+ispb_xb+istd_xb+isov_xb+issd_xb+isdcd+isrp
+            +ismf+ispsa+ispga+ispvin+isTrust+ishk_pb+ishk_td+ishk_dcd+ishk_mf+isgd+IsSecurity_XB>0
+)  aumsb
+on a.sme_id=aumsb.customer_id 
+    
+/***  ecash 近一年有log in ***/
+left join 
+(
+select  distinct company_id 
+from  Vr_bns_mcif.Ecash_CONTRACT
+ where  Contract_Type_code='1'    /**自行操作的**/
+   and    Contract_Apply_Date>=1100316       /* e-Cash上線至今 */
+   and    Contract_Apply_Date<=cast('20200430' as  date format 'yyyymmdd')       /* 改月底日 */
+   and    coalesce(contract_early_end_date,Contract_End_Date)>cast('20200430' as  date format 'yyyymmdd')  /* 改月底日 */
+  /**近365天有實動  log in ***/                                   
+)  ecash
+on a.sme_id=ecash.company_id                                  
+                                   
+  /**有撥薪的公司*/
+left  join
+(
+       select company_id
+       from  temp_retail.Company_Processing_Date_s
+       where  yymm='202004'               /* yyyymm_改欲觀察月份 */
+      
+) sal
+ on a.sme_id = sal.company_id
+ 
+/**銀代扣**/
+LEFT join
+(
+select distinct customer_id
+from (select account_nbr,customer_id
+			from vr_bns_mcif.BNS_DEPOSIT_2001    /** 改yymm***/
+			where acct_status_code in ('00')
+			and customer_id is not NULL
+			) a
+inner join 
+		(select distinct Passbook_Acct_Nbr
+ 		from  vr_bns_mcif.PB_DIRECT_DEDUCTS
+ 		qualify rank() over (partition by Passbook_Acct_Nbr,txn_code order by txn_date desc) =1
+ 		where Direct_Debit_Status_Code='1'
+ 			and Apply_Date<=cast('20200131' as  date format 'yyyymmdd')  /* 改月底日 */
+ 			and  Passbook_Acct_Nbr is not NULL
+  		)  b
+  on a.account_nbr=b. Passbook_Acct_Nbr
+) deduct
+on a.sme_id=deduct.customer_id
+
+
+where SEG2 in ('1-C','2-B')  /*改*/
+and a.sme_id not in (select distinct customer_id from temp_analysisdev.Z35615_Closed_200407 
+					union 
+				   select distinct customer_id from temp_analysisdev.Z35615_OtherClosed_0407) --停歇業
+and substr(ao.fb_ao_code,2,1) in ('1','2','3','4','5') 
+and Region_Name = '04北四'
+and mapping_type in ('U','R')  /*改*/
+
+/**拒絕類**DM;電訪;簡訊;EDM客戶**/
+And a.smeo_id not in (select customer_id 
+from vp_drv_model.drv_cust_privacy_channel 
+where consent_option_ind='N' 
+and privacy_channel_code in ('CS0004' /***拒絕電訪客戶***/    
+ ))
+
+/**拒聯類-屬性類-客群類-風險類**/
+And a.smeo_id not in (
+select  customer_id 
+from vp_drv_model.drv_cust_privacy_attribute /*** table name***/
+where consent_option_ind='N'
+and privacy_attribute_code in (
+
+                                              'AS0011'   /***保密戶***/
+                                              ,'AS0012'   /***20歲以下且未婚***/
+                                              --,'AS0015'   /***鼎極卡***/
+                                              ,'AS0060'   /***鼎尊卡***/
+                                              ,'AS0019'   /***重要人士拒絕調查,排除O項, 142,143,144 ***/
+                                              ,'AS0021'   /***tuning測試族群***/
+                                              ,'AS0023'   /***信金嚴重客訴***/
+                                              ,'AS0024'   /***個金嚴重客訴***/
+                                              ,'AS0026'   /***銀系統同ID不同姓名戶***/
+                                              ,'AS0031'   /***全產品結清客戶***/
+                                              ,'AS0036'   /***往生客戶***/
+                                              ,'AS0045'   /***單持車貸附買回客戶***/
+                                              ,'AS0051'   /*台外幣活存<3000且非信用卡流通戶*/    /***M1 WM產品人員通路須排除下列名單 */
+                                              ,'AS0052'   /*金融同業*/  /***M1 WM產品人員通路須排除下列名單 */
+                                             -- ,'AS0055'  /***金控建議排除行銷名單***/   /* 包含員工.客訴及A客請勿任務勾選*/ 
+                                              ,'EX0023'   /***純證戶 ***/           
+                                              ,'EX0001'   /***法人認養戶***/            
+                                              )) 
+
+;
+
+/*******************************************************************************************************/
+drop table temp_analysisdev.Z35615_AO ;

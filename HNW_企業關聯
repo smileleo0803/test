@@ -1,0 +1,109 @@
+select count(customer_id ) from temp_bps.wm_segment_2004 where segment = '01.HNW' ;  --1341
+
+/*Entity1*/
+select *
+from vr_bns_mcif.bns_deposit as a
+left join vp_bns_mcif.bns_relationship as b on a.Account_Nbr = b.entity1_id
+where  Acct_Status_Code = '00'
+and customer_id in (select customer_id from temp_bps.wm_segment_2004 where segment = '01.HNW')  --13781帳號
+
+
+
+/*Entity1*/
+select *
+from vr_bns_mcif.bns_deposit as a
+left join vp_bns_mcif.bns_relationship as b on a.Account_Nbr = b.entity1_id
+where  Acct_Status_Code = '00'
+and customer_id in (select customer_id from temp_bps.wm_segment_2004 where segment = '01.HNW')  --13781帳號
+
+
+
+/*企業個法分類*/  --帳戶層 
+select channel , count(*)
+from  ( 
+(select distinct account_nbr ,a.sme_id ,channel 
+from temp_analysisdev.Z35615_SMEBase_2004 as a
+left join vp_bns_mcif.bns_deposit_2004 as b on a.sme_id = b.customer_id
+where Acct_Status_Code = '00' )
+union 
+(select distinct account_nbr , a.customer_id ,'VC' as channel from vc_bns_mcif.bns_deposit_2004 as a
+ left join vc_bns_mcif.bns_customer_2004 as b on a.customer_id = b.customer_id
+ where a.customer_id not in (select sme_id from temp_analysisdev.Z35615_SMEBase_2004)
+ and a.Business_Line_Code = '2' and b.Business_Line_Code = '2'
+ and Acct_Status_Code = '00'
+ and Customer_Type_Code not in ('01','02','03','04','09','97','98') ) --排除法金自然人
+) t 
+group by channel
+
+
+/*企業個法分類*/  --ID層 
+select channel , count(*)
+from  ( 
+(select distinct sme_id ,channel 
+from temp_analysisdev.Z35615_SMEBase_2004 /*as a
+left join vp_bns_mcif.bns_deposit_2004 as b on a.sme_id = b.customer_id
+where Acct_Status_Code = '00' */)
+union 
+(select distinct a.customer_id ,'VC' as channel from vc_bns_mcif.bns_deposit_2004 as a
+ left join vc_bns_mcif.bns_customer_2004 as b on a.customer_id = b.customer_id
+ where a.customer_id not in (select sme_id from temp_analysisdev.Z35615_SMEBase_2004)
+ and a.Business_Line_Code = '2' and b.Business_Line_Code = '2'
+ and Acct_Status_Code = '00'
+ and Customer_Type_Code not in ('01','02','03','04','09','97','98') ) --排除法金自然人
+) t 
+group by channel
+
+
+
+
+
+/*直接以SME BASE為主*/
+select smeo_id , count(sme_id) 
+from temp_analysisdev.Z35615_SMEBase_2004
+group by 1
+
+
+/*SME*/
+select 
+  coalesce(base.customer_id,m.corporate_id) sme_id
+ ,coalesce(base.resp_customer_id,m.owner_id) smeo_id
+
+ from 
+ ((select distinct a.sme_id as customer_id , b.resp_customer_id ,channel 
+from temp_analysisdev.Z35615_SMEBase_2004 as a
+left join vp_bns_mcif.bns_customer_2004 as b on a.sme_id = b.customer_id
+where customer_id in (select distinct customer_id from vp_bns_mcif.bns_deposit_2004 where Acct_Status_Code = '00' ))
+union 
+(select b.customer_id ,b.resp_customer_id ,'VC' as channel from vc_bns_mcif.bns_deposit_2004 as a
+ left join vc_bns_mcif.bns_customer_2004 as b on a.customer_id = b.customer_id
+ where a.customer_id not in (select sme_id from temp_analysisdev.Z35615_SMEBase_2004)
+ and a.Business_Line_Code = '2' and b.Business_Line_Code = '2'
+ and Acct_Status_Code = '00'
+ and Customer_Type_Code not in ('01','02','03','04','09','97','98') )
+  ) base
+  full join 
+  /**收單**/
+
+  (
+  select distinct  m2.corporate_id, m1.owner_id,m2.Mer_Party_Open_Dt
+  ,rank() over (partition by m1.corporate_id order by m2.Mer_Party_Open_Dt  ,m1.owner_id) r_no
+  from 
+   (select  corporate_id, owner_id
+   from    vp_crd_mcif.cpc_merchant_application
+   ) m1
+  right join 
+   (
+   select corporate_id,Mer_Party_Status_Cd,Terminate_Cd,Terminate_Dt,Mer_Party_Open_Dt             
+   from  vdm_sem.MERCHANT_PROFILE_M 
+   where snapshot_yr_mth/100-10000=2004
+   and (
+    		Mer_Party_Status_Cd <> '8'  
+   		or ( Mer_Party_Status_Cd = '8'  and (Terminate_Cd='' or Terminate_Dt/100-10000<0)
+			  ) 
+			  )
+ ) m2
+ on m1.corporate_id=m2.corporate_id
+ where m2.corporate_id is not NULL
+ qualify r_no=1
+ )  m
+ on base.customer_id=m.corporate_id

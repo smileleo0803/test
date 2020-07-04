@@ -1,0 +1,136 @@
+--&YYYYMMDD = 20200531
+--&YYYYMM = 202005
+--&YYMM = 2005
+--&YYYY = 2020
+--&Snapshot_YM = 1200501
+--&lastFriday =  200529 --改月最後一個週五
+
+--更新--最新稅籍資料
+--更新--最新停歇業資料
+--法金Snapshot
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+/*   產製個金SME的BASE ： temp_analysisdev.Z35615_SMEBase_&YYMM    */
+create multiset table temp_analysisdev.Z35615_SMEBase_&YYMM as(
+select a.sme_id , a.smeo_id , a.rel_start_date , coalesce(a.SB_name , c.company_name) as comp_name 
+--,case when   Duration_Code='N'  then '非存續' else  '存續'  end   Duration_flag
+,case when    R_ind+merchant_ind+SME_loan_ind=0 then '00.無往來'
+          when    Pure_Sec_Ind=1 and merchant_ind+SME_loan_ind=0 then '00.純證'
+          when substr(Company_List_Cd,1,2)='G0' then 'G0.一般SB戶'
+          when substr(Company_List_Cd,1,2)='S1'  then 'S1.專1：特定法人'
+          when substr(Company_List_Cd,1,2)='S2'  then 'S2.專2：專戶信託'
+          when substr(Company_List_Cd,1,2)='S3'  then 'S3.專3：台彩專戶'
+          when substr(Company_List_Cd,1,2)='S4'  then 'S4.專4：運彩專戶' 
+                  when   channel_code='ECC' then 'C1:ECC法金客戶'
+                  when   channel_code='SME' then 'C2:SCC法金客戶'
+                  when   channel_code='RBB' then 'C3:BFA法金客戶'
+                  when merchant_ind=1 then 'M0:純收單'
+                  else '99.其他'
+                  end target_flag
+ , case when   channel_code='ECC' then 'ECC'
+        when   channel_code='SME' then 'SCC'
+		else 'SB' end channel
+  
+from (select *
+	  from temp_bps.party_SME_segment_M
+	  where snapshot_Yr_mth/100-10000= &YYMM  /** 改yymm***/
+	  and (( business_line_code<>'2'  or  business_line_code is NULL)   --區分管理權限!!!
+			 or (business_line_code='2' and channel_code is not NULL) )
+	  and (Duration_Code<>'N' or Duration_Code is NULL )
+	  and (R_ind+merchant_ind+SME_loan_ind>0) 
+                        
+		and sme_id not in  (select customer_id
+		from vp_drv_model.DRV_CUST_BANK_INFO_m 
+		where Snapshot_yr_mth/100-10000 = &YYMM   /** 改yymm***/
+		and substr(fb_ao_code,2,1)= '5' )   /**排除HNW經營**/
+	  ) a
+left join (select customer_id , company_name from temp_analysisdev.Z35615_BGM_200407) as c on a.sme_id = c.customer_id --最新稅籍資料
+) with data ; 
+
+
+/* 產製法金客戶基盤 temp_analysisdev.Z35615_VCBase_&YYMM */
+create multiset table temp_analysisdev.Z35615_VCBase_&YYMM as (
+select coalesce(a.customer_id , b.customer_id , d.customer_id ) as sme_id , a.smeo_id , a.rel_start_date , c.company_name as comp_name 
+, coalesce( d.channel_code , b.channel_code) as target_flag
+,'VC' as channel
+from (select customer_id , Resp_Customer_ID as smeo_id , rel_start_date from vc_bns_mcif.bns_customer where business_line_code = 2) as a
+left join (select customer_id , company_name from temp_analysisdev.Z35615_BGM_200407) as c on a.customer_id = c.customer_id --最新稅籍資料
+FULL OUTER JOIN (select distinct customer_id , max(channel_code) as channel_code from temp_corporate.cb_cpm_&YYYY group by customer_id ) as b on a.customer_id = b.customer_id --有在CPM內
+FULL OUTER JOIN (select distinct customer_id , channel_code from temp_corporate.weekly_cif_snapshot ) as d on a.customer_id = d.customer_id  --認養檔
+where a.customer_id not in (select distinct sme_id from temp_analysisdev.Z35615_SMEBase_&YYMM) 
+and b.customer_id not in (select distinct sme_id from temp_analysisdev.Z35615_SMEBase_&YYMM)
+and c.customer_id not in (select distinct sme_id from temp_analysisdev.Z35615_SMEBase_&YYMM)
+) with data ;  
+
+
+/*Sara潛力11萬戶*/
+CREATE multiset table temp_analysisdev.sara_11wBase_&YYMM as (
+select * from 
+(select a.cust_id,a.comp_id,a.flag ,
+      		case when a.cust_id=a1.customer_id and a.flag='05_name_dist' then '05_name_dist_ccoc'  else a.flag end as flag1 ,
+			case when a.cust_id =h1.SB_ID then  'SB' when a.comp_id =h2.SB_ID  then 'SB' else 'Not SB' end as sbo  ,
+			case when a.cust_id =k1.customer_id then 1 when  a.comp_id =k2.customer_id then 1 else 0 end as open_close ,
+			case when m1.pure_sec=1  then '98_pure_sec'  when a.cust_id =m1.customer_id then '01_持本行帳戶' 
+			when a.cust_id =m2.customer_id then '02_純卡戶' else '99_非本行客戶' end as ex_flag ,
+   			case when  a.cust_id=m1.customer_id and m1.main_seg ='01.M3' then '01.M3'  
+			when  a.cust_id=m1.customer_id and m1.main_seg  in ('02.M2A','03.M2B' ) then '02.M2' 
+			when  a.cust_id=m1.customer_id and m1.main_seg ='04.M1' and d1.a_aum>=50000 then '03.M1高於5萬' 
+			when  a.cust_id=m1.customer_id and m1.main_seg ='04.M1' then '04.M1低於5萬' 
+			when  l.c_ind ='1'  and l.C_Dormant_Ind =0 then '05.純卡有動用' else '06.純卡無動用' end as membership1,
+			case when  a.comp_id=k.customer_id and  substr(k.industry_code,1,2) in ('01','02','03','05','06','35','36','37','38','39','41','42','43','66','67','68','93', '96') then '01_負面產業'
+			when a.cust_id =g.customer_id and g.tbrg_risk_grade<5 then  '02_TBRG<5' 
+			when a.comp_id=j.reg_no then '03_鄧白氏起訴' else '99_優質潛力SB'  end as final_sb	  
+from 
+(select distinct comp_id,cust_id,flag from  temp_analysisdev.Z44721_sb_nm_addr_comp_tel   )  a 
+left join (select distinct customer_id from vp_bns_mcif.scor_cust_behavior_&YYMM where cust_position_code in ('09','10') ) a1 on a.cust_id=a1.customer_id  ---CCOC  /*改時間*/
+left join (select  distinct  SB_ID from  vp_drv_model.drv_cust_sb_info_m 
+                      where  snapshot_yr_mth/100-10000= &YYMM and Pure_Sec_Ind=0  and Sb_Ind=1 and Company_List_Code='G000' and  (Duration_Code  is NULL or Duration_Code<>'N') ) h1 
+					  on a.cust_id =h1.SB_ID --SB(CUST_ID)
+left join (select  distinct  SB_ID from  vp_drv_model.drv_cust_sb_info_m 
+                      where  snapshot_yr_mth/100-10000= &YYMM and Pure_Sec_Ind=0  and Sb_Ind=1 and Company_List_Code='G000' and  (Duration_Code  is NULL or Duration_Code<>'N') ) h2
+					  on a.comp_id =h2.SB_ID  ---SB(統編) 
+left join temp_analysisdev.z35615_bgm k on a.comp_id=k.customer_id 			  
+left join ( select distinct  customer_id from temp_analysisdev.Z35615_BGM ) k1 on a.cust_id =k1.customer_id--存活企業 			  
+left join ( select distinct  customer_id from temp_analysisdev.Z35615_BGM ) k2 on a.comp_id =k2.customer_id--存活企業 			  
+left join ( select distinct  customer_id,pure_sec,main_seg from temp_bps.wm_segment_&YYMM where main_seg is not null ) m1   on a.cust_id =m1.customer_id    --持本行帳戶	& 純證戶		  
+left join (select   distinct customer_id  from vp_crd_cpm.Pri_Customer_Status_&YYMM where Circulation_Status_Code =0) m2   on a.cust_id =m2.customer_id    --持本行信用卡	
+left join  (select  * from vp_drv_model.DRV_CUST_PROFILE_INFO_M where Snapshot_Yr_Mth= &Snapshot_YM ) l on a.cust_id=l.customer_id  /*持卡狀態*/
+left join (select  customer_id,SUM(asset_bal) as a_aum	from temp_bps.wm_assetsclass_&YYMM group by customer_id ) d1  on a.cust_id= d1.customer_id /*TOTAL AUM */
+left join (select distinct customer_id,tbrg_risk_grade from vp_bns_mcif.scor_cust_behavior_&YYMM ) g on a.cust_id =g.customer_id 
+left join (select reg_no from temp_analysisdev.z35615_dbc where law_record_flag='Y' ) j on a.comp_id=j.reg_no
+) H
+where flag1 in ('01_name_addr','02_name_comp' ,'03_name_comp3','04_name_tel','05_name_dist_ccoc')  and sbo ='Not SB' and open_close=1  
+			and ex_flag in ( '01_持本行帳戶' ,'02_純卡戶')   and final_sb = '99_優質潛力SB'
+) WITH DATA ;
+
+
+/* 產製潛力客戶基盤 temp_analysisdev.Z35615_PoBase_&YYMM */
+create multiset table temp_analysisdev.Z35615_PoBase_&YYMM as (
+select a.comp_id as sme_id , a.cust_id as smeo_id , b.rel_start_date , c.company_name as comp_name 
+, a.flag1 as target_flag
+,'Po' as channel
+from temp_analysisdev.sara_11wBase_&YYMM as a
+LEFT JOIN (select customer_id as sme_id , rel_start_date from vp_bns_mcif.bns_customer) as b on a.comp_id = b.sme_id
+left join (select customer_id , company_name from temp_analysisdev.Z35615_BGM_200407) as c on a.comp_id = c.customer_id --最新稅籍資料
+where a.comp_id not in (select distinct sme_id from temp_analysisdev.Z35615_SMEBase_&YYMM)  --SME Base
+and a.comp_id not in (select distinct sme_id from temp_analysisdev.Z35615_VCBase_&YYMM) --法金Base
+) with data ;  
+
+
+
+drop table temp_analysisdev.sara_11wBase_&YYMM ;
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+/* union SME、法金、潛力客戶Base */
+create multiset table temp_analysisdev.Z35615_company_&YYMM as (
+select * from temp_analysisdev.Z35615_SMEBase_&YYMM
+union 
+select * from temp_analysisdev.Z35615_VCBase_&YYMM
+union 
+select * from temp_analysisdev.Z35615_PoBase_&YYMM
+) with data ;
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+drop table temp_analysisdev.Z35615_SMEBase_&YYMM;
+drop table temp_analysisdev.Z35615_VCBase_&YYMM;
+drop table temp_analysisdev.Z35615_PoBase_&YYMM;

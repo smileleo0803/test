@@ -1,0 +1,421 @@
+	/*名單Loan撥貸量、筆數*/
+(SELECT '0.ECC_105' as P_name , COUNT(distinct customer_id) as cnt
+ 	,sum(case when Funding_Amt < 500000 then 1 else 0 end) as "<50_cnt"
+	,sum(case when Funding_Amt = 500000 then 1 else 0 end) as "=50_cnt"
+	,sum(case when Funding_Amt <= 500000 then 1 else 0 end) as "<=50_cnt"
+	,sum(case when Funding_Amt > 500000 then 1 else 0 end) as ">50_cnt"
+	,"<=50_cnt" + ">50_cnt" as "總撥貸次數"
+	,sum(case when Funding_Amt < 500000 then Funding_Amt else 0 end) as "<50_amt"
+	,sum(case when Funding_Amt = 500000 then Funding_Amt else 0 end) as "=50_amt"
+	,sum(case when Funding_Amt <= 500000 then Funding_Amt else 0 end) as "<=50_amt"
+	,sum(case when Funding_Amt > 500000 then Funding_Amt else 0 end) as ">50_amt"
+	,"<=50_amt" + ">50_amt" as "總撥貸金額"
+from temp_corp_retail.BNS_LOAN
+where customer_id in (select distinct comp_id FROM temp_analysisdev.Z44721_SB_FAlist_20200102)
+	and First_loan_funding_date >= 1191206 )
+	
+union all
+
+(SELECT 'A.ECC_119' as P_name , COUNT(distinct customer_id) as cnt
+ 	,sum(case when Funding_Amt < 500000 then 1 else 0 end) as "<50_cnt"
+	,sum(case when Funding_Amt = 500000 then 1 else 0 end) as "=50_cnt"
+	,sum(case when Funding_Amt <= 500000 then 1 else 0 end) as "<=50_cnt"
+	,sum(case when Funding_Amt > 500000 then 1 else 0 end) as ">50_cnt"
+	,"<=50_cnt" + ">50_cnt" as "總撥貸次數"
+	,sum(case when Funding_Amt < 500000 then Funding_Amt else 0 end) as "<50_amt"
+	,sum(case when Funding_Amt = 500000 then Funding_Amt else 0 end) as "=50_amt"
+	,sum(case when Funding_Amt <= 500000 then Funding_Amt else 0 end) as "<=50_amt"
+	,sum(case when Funding_Amt > 500000 then Funding_Amt else 0 end) as ">50_amt"
+	,"<=50_amt" + ">50_amt" as "總撥貸金額"
+from temp_corp_retail.BNS_LOAN
+where customer_id in (select distinct sd_id FROM temp_analysisdev.Z44721_faecc_list_info)
+	and First_loan_funding_date >= 1200131 )
+	
+union all
+
+(SELECT 'B.SCC_2470' as P_name , COUNT(distinct customer_id) as cnt
+ 	,sum(case when Funding_Amt < 500000 then 1 else 0 end) as "<50_cnt"
+	,sum(case when Funding_Amt = 500000 then 1 else 0 end) as "=50_cnt"
+	,sum(case when Funding_Amt <= 500000 then 1 else 0 end) as "<=50_cnt"
+	,sum(case when Funding_Amt > 500000 then 1 else 0 end) as ">50_cnt"
+	,"<=50_cnt" + ">50_cnt" as "總撥貸次數"
+	,sum(case when Funding_Amt < 500000 then Funding_Amt else 0 end) as "<50_amt"
+	,sum(case when Funding_Amt = 500000 then Funding_Amt else 0 end) as "=50_amt"
+	,sum(case when Funding_Amt <= 500000 then Funding_Amt else 0 end) as "<=50_amt"
+	,sum(case when Funding_Amt > 500000 then Funding_Amt else 0 end) as ">50_amt"
+	,"<=50_amt" + ">50_amt" as "總撥貸金額"
+from temp_corp_retail.BNS_LOAN
+where customer_id in (select distinct sme_id FROM temp_analysisdev.SCC_2470)
+	and First_loan_funding_date >= 1200120 )
+	
+union all
+
+(SELECT 'C.SCC_5371' as P_name , COUNT(distinct customer_id) as cnt
+ 	,sum(case when Funding_Amt < 500000 then 1 else 0 end) as "<50_cnt"
+	,sum(case when Funding_Amt = 500000 then 1 else 0 end) as "=50_cnt"
+	,sum(case when Funding_Amt <= 500000 then 1 else 0 end) as "<=50_cnt"
+	,sum(case when Funding_Amt > 500000 then 1 else 0 end) as ">50_cnt"
+	,"<=50_cnt" + ">50_cnt" as "總撥貸次數"
+	,sum(case when Funding_Amt < 500000 then Funding_Amt else 0 end) as "<50_amt"
+	,sum(case when Funding_Amt = 500000 then Funding_Amt else 0 end) as "=50_amt"
+	,sum(case when Funding_Amt <= 500000 then Funding_Amt else 0 end) as "<=50_amt"
+	,sum(case when Funding_Amt > 500000 then Funding_Amt else 0 end) as ">50_amt"
+	,"<=50_amt" + ">50_amt" as "總撥貸金額"
+from temp_corp_retail.BNS_LOAN
+where customer_id in (select distinct sb_id FROM temp_analysisdev.SCC_list1)
+	and First_loan_funding_date >= 1200101)
+	
+union all
+
+(SELECT 'D.SCC_4040' as P_name , COUNT(distinct customer_id) as cnt
+ 	,sum(case when Funding_Amt < 500000 then 1 else 0 end) as "<50_cnt"
+	,sum(case when Funding_Amt = 500000 then 1 else 0 end) as "=50_cnt"
+	,sum(case when Funding_Amt <= 500000 then 1 else 0 end) as "<=50_cnt"
+	,sum(case when Funding_Amt > 500000 then 1 else 0 end) as ">50_cnt"
+	,"<=50_cnt" + ">50_cnt" as "總撥貸次數"
+	,sum(case when Funding_Amt < 500000 then Funding_Amt else 0 end) as "<50_amt"
+	,sum(case when Funding_Amt = 500000 then Funding_Amt else 0 end) as "=50_amt"
+	,sum(case when Funding_Amt <= 500000 then Funding_Amt else 0 end) as "<=50_amt"
+	,sum(case when Funding_Amt > 500000 then Funding_Amt else 0 end) as ">50_amt"
+	,"<=50_amt" + ">50_amt" as "總撥貸金額"
+from temp_corp_retail.BNS_LOAN
+where customer_id in (select distinct customer_id FROM temp_analysisdev.SCC_list2)
+	and First_loan_funding_date >=  1200304)
+	
+union all
+
+(SELECT 'E.EC_735' as P_name , COUNT(distinct customer_id) as cnt
+ 	,sum(case when Funding_Amt < 500000 then 1 else 0 end) as "<50_cnt"
+	,sum(case when Funding_Amt = 500000 then 1 else 0 end) as "=50_cnt"
+	,sum(case when Funding_Amt <= 500000 then 1 else 0 end) as "<=50_cnt"
+	,sum(case when Funding_Amt > 500000 then 1 else 0 end) as ">50_cnt"
+	,"<=50_cnt" + ">50_cnt" as "總撥貸次數"
+	,sum(case when Funding_Amt < 500000 then Funding_Amt else 0 end) as "<50_amt"
+	,sum(case when Funding_Amt = 500000 then Funding_Amt else 0 end) as "=50_amt"
+	,sum(case when Funding_Amt <= 500000 then Funding_Amt else 0 end) as "<=50_amt"
+	,sum(case when Funding_Amt > 500000 then Funding_Amt else 0 end) as ">50_amt"
+	,"<=50_amt" + ">50_amt" as "總撥貸金額"
+from temp_corp_retail.BNS_LOAN
+where customer_id in (select distinct sme_id FROM temp_analysisdev.EC_735)
+	and First_loan_funding_date >= 1200409)
+	
+union all
+
+(SELECT 'F.SCC_7000' as P_name , COUNT(distinct customer_id) as cnt
+ 	,sum(case when Funding_Amt < 500000 then 1 else 0 end) as "<50_cnt"
+	,sum(case when Funding_Amt = 500000 then 1 else 0 end) as "=50_cnt"
+	,sum(case when Funding_Amt <= 500000 then 1 else 0 end) as "<=50_cnt"
+	,sum(case when Funding_Amt > 500000 then 1 else 0 end) as ">50_cnt"
+	,"<=50_cnt" + ">50_cnt" as "總撥貸次數"
+	,sum(case when Funding_Amt < 500000 then Funding_Amt else 0 end) as "<50_amt"
+	,sum(case when Funding_Amt = 500000 then Funding_Amt else 0 end) as "=50_amt"
+	,sum(case when Funding_Amt <= 500000 then Funding_Amt else 0 end) as "<=50_amt"
+	,sum(case when Funding_Amt > 500000 then Funding_Amt else 0 end) as ">50_amt"
+	,"<=50_amt" + ">50_amt" as "總撥貸金額"
+from temp_corp_retail.BNS_LOAN
+where customer_id in (select distinct "公司統編" FROM temp_analysisdev.Z35615_SCC_24000_v1)
+	and First_loan_funding_date >= 1200410 )
+/*
+union all
+
+(SELECT 'G.VRM_1200' as P_name , COUNT(distinct customer_id) as cnt
+ 	,sum(case when Funding_Amt < 500000 then 1 else 0 end) as "<50_cnt"
+	,sum(case when Funding_Amt = 500000 then 1 else 0 end) as "=50_cnt"
+	,sum(case when Funding_Amt <= 500000 then 1 else 0 end) as "<=50_cnt"
+	,sum(case when Funding_Amt > 500000 then 1 else 0 end) as ">50_cnt"
+	,"<=50_cnt" + ">50_cnt" as "總撥貸次數"
+	,sum(case when Funding_Amt < 500000 then Funding_Amt else 0 end) as "<50_amt"
+	,sum(case when Funding_Amt = 500000 then Funding_Amt else 0 end) as "=50_amt"
+	,sum(case when Funding_Amt <= 500000 then Funding_Amt else 0 end) as "<=50_amt"
+	,sum(case when Funding_Amt > 500000 then Funding_Amt else 0 end) as ">50_amt"
+	,"<=50_amt" + ">50_amt" as "總撥貸金額"
+from temp_corp_retail.BNS_LOAN
+where customer_id in (select distinct sme_id FROM temp_analysisdev.Z35615_Bank_C_1200)
+	and First_loan_funding_date >= 1200601 )	
+*/
+union all
+
+(SELECT 'H.1BNOFA_1469'  as P_name , COUNT(distinct customer_id) as cnt
+ 	,sum(case when Funding_Amt < 500000 then 1 else 0 end) as "<50_cnt"
+	,sum(case when Funding_Amt = 500000 then 1 else 0 end) as "=50_cnt"
+	,sum(case when Funding_Amt <= 500000 then 1 else 0 end) as "<=50_cnt"
+	,sum(case when Funding_Amt > 500000 then 1 else 0 end) as ">50_cnt"
+	,"<=50_cnt" + ">50_cnt" as "總撥貸次數"
+	,sum(case when Funding_Amt < 500000 then Funding_Amt else 0 end) as "<50_amt"
+	,sum(case when Funding_Amt = 500000 then Funding_Amt else 0 end) as "=50_amt"
+	,sum(case when Funding_Amt <= 500000 then Funding_Amt else 0 end) as "<=50_amt"
+	,sum(case when Funding_Amt > 500000 then Funding_Amt else 0 end) as ">50_amt"
+	,"<=50_amt" + ">50_amt" as "總撥貸金額"
+from temp_corp_retail.BNS_LOAN
+where customer_id in (select distinct "統編" FROM  temp_analysisdev.Z35615_1BNOFA_1469 )
+	and First_loan_funding_date >= 1200715)
+	
+union all
+
+(SELECT  'I.bid_3942'  as P_name , COUNT(distinct customer_id) as cnt
+ 	,sum(case when Funding_Amt < 500000 then 1 else 0 end) as "<50_cnt"
+	,sum(case when Funding_Amt = 500000 then 1 else 0 end) as "=50_cnt"
+	,sum(case when Funding_Amt <= 500000 then 1 else 0 end) as "<=50_cnt"
+	,sum(case when Funding_Amt > 500000 then 1 else 0 end) as ">50_cnt"
+	,"<=50_cnt" + ">50_cnt" as "總撥貸次數"
+	,sum(case when Funding_Amt < 500000 then Funding_Amt else 0 end) as "<50_amt"
+	,sum(case when Funding_Amt = 500000 then Funding_Amt else 0 end) as "=50_amt"
+	,sum(case when Funding_Amt <= 500000 then Funding_Amt else 0 end) as "<=50_amt"
+	,sum(case when Funding_Amt > 500000 then Funding_Amt else 0 end) as ">50_amt"
+	,"<=50_amt" + ">50_amt" as "總撥貸金額"
+from temp_corp_retail.BNS_LOAN
+where customer_id in (select distinct "得標統編" FROM temp_analysisdev.Z35615_biddinglist_3942)
+	and First_loan_funding_date >= 1200715 )
+
+union all
+
+(SELECT 'J.EBM_SCORE_691'  as P_name , COUNT(distinct customer_id) as cnt
+ 	,sum(case when Funding_Amt < 500000 then 1 else 0 end) as "<50_cnt"
+	,sum(case when Funding_Amt = 500000 then 1 else 0 end) as "=50_cnt"
+	,sum(case when Funding_Amt <= 500000 then 1 else 0 end) as "<=50_cnt"
+	,sum(case when Funding_Amt > 500000 then 1 else 0 end) as ">50_cnt"
+	,"<=50_cnt" + ">50_cnt" as "總撥貸次數"
+	,sum(case when Funding_Amt < 500000 then Funding_Amt else 0 end) as "<50_amt"
+	,sum(case when Funding_Amt = 500000 then Funding_Amt else 0 end) as "=50_amt"
+	,sum(case when Funding_Amt <= 500000 then Funding_Amt else 0 end) as "<=50_amt"
+	,sum(case when Funding_Amt > 500000 then Funding_Amt else 0 end) as ">50_amt"
+	,"<=50_amt" + ">50_amt" as "總撥貸金額"
+from temp_corp_retail.BNS_LOAN
+where customer_id in (select distinct "統編" FROM temp_analysisdev.Z35615_EBM_SCORE_list_691)
+	and First_loan_funding_date >= 1200715 )	
+;
+	
+/*************************Loan<50萬撥貸量********************************/
+(select '0.ECC_105' as P_name , count(distinct customer_id)	as cnt_under50
+from temp_corp_retail.BNS_LOAN
+where customer_id in (select distinct comp_id FROM temp_analysisdev.Z44721_SB_FAlist_20200102)
+	and First_loan_funding_date >= 1191206 and Funding_Amt < 500000 ) 
+	union all
+(select 'A.ECC_119' as P_name , count(distinct customer_id)	as cnt_under50
+from temp_corp_retail.BNS_LOAN
+where customer_id in (select distinct sd_id FROM temp_analysisdev.Z44721_faecc_list_info)
+	and First_loan_funding_date >= 1200131 and Funding_Amt < 500000 ) 
+	union all
+(select 'B.SCC_2470' as P_name , count(distinct customer_id)	as cnt_under50
+from temp_corp_retail.BNS_LOAN
+where customer_id in (select distinct sme_id FROM temp_analysisdev.SCC_2470)
+	and First_loan_funding_date >= 1200120 and Funding_Amt < 500000 ) 
+	union all
+(select 'C.SCC_5371' as P_name , count(distinct customer_id)	as cnt_under50
+from temp_corp_retail.BNS_LOAN
+where customer_id in (select distinct sb_id FROM temp_analysisdev.SCC_list1)
+	and First_loan_funding_date >= 1200101 and Funding_Amt < 500000 ) 
+	union all
+(select 'D.SCC_4040' as P_name , count(distinct customer_id)	as cnt_under50
+from temp_corp_retail.BNS_LOAN
+where customer_id in (select distinct customer_id FROM temp_analysisdev.SCC_list2)
+	and First_loan_funding_date >=  1200304 and Funding_Amt < 500000 ) 
+	union all
+(select 'E.EC_735' as P_name , count(distinct customer_id)	as cnt_under50
+from temp_corp_retail.BNS_LOAN
+where customer_id in (select distinct sme_id FROM temp_analysisdev.EC_735)
+	and First_loan_funding_date >= 1200409 and Funding_Amt < 500000 ) 
+union all
+(select 'F.SCC_7000' as P_name , count(distinct customer_id)	as cnt_under50
+from temp_corp_retail.BNS_LOAN
+where customer_id in (select distinct "公司統編" FROM temp_analysisdev.Z35615_SCC_24000_v1)
+	and First_loan_funding_date >= 1200410 and Funding_Amt < 500000 )
+/*union all
+(select 'G.VRM_1200' as P_name , count(distinct customer_id)	as cnt_under50
+from temp_corp_retail.BNS_LOAN
+where customer_id in (select distinct sme_id FROM temp_analysisdev.Z35615_Bank_C_1200)
+	and First_loan_funding_date >= 1200601 and Funding_Amt < 500000 )
+*/
+	union all
+(select 'H.1BNOFA_1469' as P_name , count(distinct customer_id)	as cnt_under50
+from temp_corp_retail.BNS_LOAN
+where customer_id in (select distinct "統編" FROM temp_analysisdev.Z35615_1BNOFA_1469 )
+	and First_loan_funding_date >= 1200715 and Funding_Amt < 500000 ) 
+union all
+(select 'I.bid_3942' as P_name , count(distinct customer_id)	as cnt_under50
+from temp_corp_retail.BNS_LOAN
+where customer_id in (select distinct "得標統編" FROM temp_analysisdev.Z35615_biddinglist_3942)
+	and First_loan_funding_date >= 1200715 and Funding_Amt < 500000 )
+union all
+(select 'J.EBM_SCORE_691' as P_name , count(distinct customer_id)	as cnt_under50
+from temp_corp_retail.BNS_LOAN
+where customer_id in (select distinct "統編" FROM temp_analysisdev.Z35615_EBM_SCORE_list_691)
+	and First_loan_funding_date >= 1200715 and Funding_Amt < 500000 )
+	;
+	
+	
+/*************************Loan=50撥貸量****************************************************************/
+(select '0.ECC_105' as P_name , count(distinct customer_id)	as cnt_EG50
+from temp_corp_retail.BNS_LOAN
+where customer_id in (select distinct comp_id FROM temp_analysisdev.Z44721_SB_FAlist_20200102)
+	and First_loan_funding_date >= 1191206 and Funding_Amt = 500000 ) 
+	union all
+(select 'A.ECC_119' as P_name , count(distinct customer_id)	as cnt_EG50
+from temp_corp_retail.BNS_LOAN
+where customer_id in (select distinct sd_id FROM temp_analysisdev.Z44721_faecc_list_info)
+	and First_loan_funding_date >= 1200131 and Funding_Amt = 500000 ) 
+	union all
+(select 'B.SCC_2470' as P_name , count(distinct customer_id)	as cnt_EG50
+from temp_corp_retail.BNS_LOAN
+where customer_id in (select distinct sme_id FROM temp_analysisdev.SCC_2470)
+	and First_loan_funding_date >= 1200120 and Funding_Amt = 500000 ) 
+	union all
+(select 'C.SCC_5371' as P_name , count(distinct customer_id)	as cnt_EG50
+from temp_corp_retail.BNS_LOAN
+where customer_id in (select distinct sb_id FROM temp_analysisdev.SCC_list1)
+	and First_loan_funding_date >= 1200101 and Funding_Amt = 500000 ) 
+	union all
+(select 'D.SCC_4040' as P_name , count(distinct customer_id)	as cnt_EG50
+from temp_corp_retail.BNS_LOAN
+where customer_id in (select distinct customer_id FROM temp_analysisdev.SCC_list2)
+	and First_loan_funding_date >=  1200304 and Funding_Amt = 500000 ) 
+	union all
+(select 'E.EC_735' as P_name , count(distinct customer_id)	as cnt_EG50
+from temp_corp_retail.BNS_LOAN
+where customer_id in (select distinct sme_id FROM temp_analysisdev.EC_735)
+	and First_loan_funding_date >= 1200409 and Funding_Amt = 500000 ) 
+union all
+(select 'F.SCC_7000' as P_name , count(distinct customer_id)	as cnt_EG50
+from temp_corp_retail.BNS_LOAN
+where customer_id in (select distinct "公司統編" FROM temp_analysisdev.Z35615_SCC_24000_v1)
+	and First_loan_funding_date >= 1200410 and Funding_Amt = 500000 ) 
+/*	union all
+(select 'G.VRM_1200' as P_name , count(distinct customer_id)	as cnt_EG50
+from temp_corp_retail.BNS_LOAN
+where customer_id in (select distinct sme_id FROM temp_analysisdev.Z35615_Bank_C_1200)
+	and First_loan_funding_date >= 1200601 and Funding_Amt = 500000 )*/
+union all
+(select 'H.1BNOFA_1469' as P_name , count(distinct customer_id)	as cnt_under50
+from temp_corp_retail.BNS_LOAN
+where customer_id in (select distinct "統編" FROM temp_analysisdev.Z35615_1BNOFA_1469 )
+	and First_loan_funding_date >= 1200715 and Funding_Amt = 500000 ) 
+union all
+(select 'I.bid_3942' as P_name , count(distinct customer_id)	as cnt_under50
+from temp_corp_retail.BNS_LOAN
+where customer_id in (select distinct "得標統編" FROM temp_analysisdev.Z35615_biddinglist_3942)
+	and First_loan_funding_date >= 1200715 and Funding_Amt = 500000 )
+union all
+(select 'J.EBM_SCORE_691' as P_name , count(distinct customer_id)	as cnt_under50
+from temp_corp_retail.BNS_LOAN
+where customer_id in (select distinct "統編" FROM temp_analysisdev.Z35615_EBM_SCORE_list_691)
+	and First_loan_funding_date >= 1200715 and Funding_Amt = 500000 )
+	;
+
+
+
+/*************************Loan<=50撥貸量****************************************************************/
+(select '0.ECC_105' as P_name , count(distinct customer_id)	as cnt_LE50
+from temp_corp_retail.BNS_LOAN
+where customer_id in (select distinct comp_id FROM temp_analysisdev.Z44721_SB_FAlist_20200102)
+	and First_loan_funding_date >= 1191206 and Funding_Amt <= 500000 ) 
+	union all
+(select 'A.ECC_119' as P_name , count(distinct customer_id)	as cnt_LE50
+from temp_corp_retail.BNS_LOAN
+where customer_id in (select distinct sd_id FROM temp_analysisdev.Z44721_faecc_list_info)
+	and First_loan_funding_date >= 1200131 and Funding_Amt <= 500000 ) 
+	union all
+(select 'B.SCC_2470' as P_name , count(distinct customer_id)	as cnt_LE50
+from temp_corp_retail.BNS_LOAN
+where customer_id in (select distinct sme_id FROM temp_analysisdev.SCC_2470)
+	and First_loan_funding_date >= 1200120 and Funding_Amt <= 500000 ) 
+	union all
+(select 'C.SCC_5371' as P_name , count(distinct customer_id)	as cnt_LE50
+from temp_corp_retail.BNS_LOAN
+where customer_id in (select distinct sb_id FROM temp_analysisdev.SCC_list1)
+	and First_loan_funding_date >= 1200101 and Funding_Amt <= 500000 ) 
+	union all
+(select 'D.SCC_4040' as P_name , count(distinct customer_id)	as cnt_LE50
+from temp_corp_retail.BNS_LOAN
+where customer_id in (select distinct customer_id FROM temp_analysisdev.SCC_list2)
+	and First_loan_funding_date >=  1200304 and Funding_Amt <= 500000 ) 
+	union all
+(select 'E.EC_735' as P_name , count(distinct customer_id)	as cnt_LE50
+from temp_corp_retail.BNS_LOAN
+where customer_id in (select distinct sme_id FROM temp_analysisdev.EC_735)
+	and First_loan_funding_date >= 1200409 and Funding_Amt <= 500000 ) 
+union all
+(select 'F.SCC_7000' as P_name , count(distinct customer_id)	as cnt_LE50
+from temp_corp_retail.BNS_LOAN
+where customer_id in (select distinct "公司統編" FROM temp_analysisdev.Z35615_SCC_24000_v1)
+	and First_loan_funding_date >= 1200410 and Funding_Amt <= 500000 ) 
+/*	union all
+(select 'G.VRM_1200' as P_name , count(distinct customer_id)	as cnt_LE50
+from temp_corp_retail.BNS_LOAN
+where customer_id in (select distinct sme_id FROM temp_analysisdev.Z35615_Bank_C_1200)
+	and First_loan_funding_date >= 1200601 and Funding_Amt <= 500000 )*/
+union all
+(select 'H.1BNOFA_1469' as P_name , count(distinct customer_id)	as cnt_under50
+from temp_corp_retail.BNS_LOAN
+where customer_id in (select distinct "統編" FROM temp_analysisdev.Z35615_1BNOFA_1469 )
+	and First_loan_funding_date >= 1200715 and Funding_Amt <= 500000 ) 
+union all
+(select 'I.bid_3942' as P_name , count(distinct customer_id)	as cnt_under50
+from temp_corp_retail.BNS_LOAN
+where customer_id in (select distinct "得標統編" FROM temp_analysisdev.Z35615_biddinglist_3942)
+	and First_loan_funding_date >= 1200715 and Funding_Amt <= 500000 )
+union all
+(select 'J.EBM_SCORE_691' as P_name , count(distinct customer_id)	as cnt_under50
+from temp_corp_retail.BNS_LOAN
+where customer_id in (select distinct "統編" FROM temp_analysisdev.Z35615_EBM_SCORE_list_691)
+	and First_loan_funding_date >= 1200715 and Funding_Amt <= 500000 )
+;
+
+
+/*************************Loan>50撥貸量********************************/
+(select '0.ECC_105' as P_name , count(distinct customer_id)	as cnt_greater50
+from temp_corp_retail.BNS_LOAN
+where customer_id in (select distinct comp_id FROM temp_analysisdev.Z44721_SB_FAlist_20200102)
+	and First_loan_funding_date >= 1191206 and Funding_Amt > 500000 ) 
+	union all
+(select 'A.ECC_119' as P_name , count(distinct customer_id)	as cnt_greater50
+from temp_corp_retail.BNS_LOAN
+where customer_id in (select distinct sd_id FROM temp_analysisdev.Z44721_faecc_list_info)
+	and First_loan_funding_date >= 1200131 and Funding_Amt > 500000 ) 
+	union all
+(select 'B.SCC_2470' as P_name , count(distinct customer_id)	as cnt_greater50
+from temp_corp_retail.BNS_LOAN
+where customer_id in (select distinct sme_id FROM temp_analysisdev.SCC_2470)
+	and First_loan_funding_date >= 1200120 and Funding_Amt > 500000 ) 
+	union all
+(select 'C.SCC_5371' as P_name , count(distinct customer_id)	as cnt_greater50
+from temp_corp_retail.BNS_LOAN
+where customer_id in (select distinct sb_id FROM temp_analysisdev.SCC_list1)
+	and First_loan_funding_date >= 1200101 and Funding_Amt > 500000 ) 
+	union all
+(select 'D.SCC_4040' as P_name , count(distinct customer_id)	as cnt_greater50
+from temp_corp_retail.BNS_LOAN
+where customer_id in (select distinct customer_id FROM temp_analysisdev.SCC_list2)
+	and First_loan_funding_date >=  1200304 and Funding_Amt > 500000 ) 
+	union all
+(select 'E.EC_735' as P_name , count(distinct customer_id)	as cnt_greater50
+from temp_corp_retail.BNS_LOAN
+where customer_id in (select distinct sme_id FROM temp_analysisdev.EC_735)
+	and First_loan_funding_date >= 1200409 and Funding_Amt > 500000 ) 
+union all
+(select 'F.SCC_7000' as P_name , count(distinct customer_id)	as cnt_greater50
+from temp_corp_retail.BNS_LOAN
+where customer_id in (select distinct "公司統編" FROM temp_analysisdev.Z35615_SCC_24000_v1)
+	and First_loan_funding_date >= 1200410 and Funding_Amt > 500000 ) 
+/*	union all
+(select 'G.VRM_1200' as P_name , count(distinct customer_id)	as cnt_greater50
+from temp_corp_retail.BNS_LOAN
+where customer_id in (select distinct sme_id FROM temp_analysisdev.Z35615_Bank_C_1200)
+	and First_loan_funding_date >= 1200601 and Funding_Amt > 500000 ) */
+union all
+(select 'H.1BNOFA_1469' as P_name , count(distinct customer_id)	as cnt_under50
+from temp_corp_retail.BNS_LOAN
+where customer_id in (select distinct "統編" FROM temp_analysisdev.Z35615_1BNOFA_1469 )
+	and First_loan_funding_date >= 1200715 and Funding_Amt > 500000 ) 
+union all
+(select 'I.bid_3942' as P_name , count(distinct customer_id)	as cnt_under50
+from temp_corp_retail.BNS_LOAN
+where customer_id in (select distinct "得標統編" FROM temp_analysisdev.Z35615_biddinglist_3942)
+	and First_loan_funding_date >= 1200715 and Funding_Amt > 500000 )
+union all
+(select 'J.EBM_SCORE_691' as P_name , count(distinct customer_id)	as cnt_under50
+from temp_corp_retail.BNS_LOAN
+where customer_id in (select distinct "統編" FROM temp_analysisdev.Z35615_EBM_SCORE_list_691)
+	and First_loan_funding_date >= 1200715 and Funding_Amt > 500000 )
+	;
+
+	
